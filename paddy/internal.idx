@@ -1,0 +1,7 @@
+nimTitle	internal	paddy/internal.html	module src/paddy/internal		0
+nim	GamepadDeadzone	paddy/internal.html#GamepadDeadzone	const GamepadDeadzone		4
+nim	GamepadState	paddy/internal.html#GamepadState	object GamepadState		7
+nim	gamepadFilterDeadZone	paddy/internal.html#gamepadFilterDeadZone,float32	proc gamepadFilterDeadZone(value: float32): float32		15
+nim	gamepadUpdateButtons	paddy/internal.html#gamepadUpdateButtons.t,GamepadState,uint32	template gamepadUpdateButtons(state: var GamepadState; buttons: uint32)		22
+nim	gamepadResetState	paddy/internal.html#gamepadResetState,GamepadState	proc gamepadResetState(state: var GamepadState)		28
+nim	toGamepad	paddy/internal.html#toGamepad,GamepadState,int	proc toGamepad(state: GamepadState; id: int): Gamepad		39

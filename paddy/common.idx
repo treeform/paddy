@@ -1,0 +1,35 @@
+nimTitle	common	paddy/common.html	module src/paddy/common		0
+nim	PaddyError	paddy/common.html#PaddyError	object PaddyError		2
+nim	GamepadA	paddy/common.html#GamepadA	GamepadButton.GamepadA		5
+nim	GamepadB	paddy/common.html#GamepadB	GamepadButton.GamepadB		5
+nim	GamepadX	paddy/common.html#GamepadX	GamepadButton.GamepadX		5
+nim	GamepadY	paddy/common.html#GamepadY	GamepadButton.GamepadY		5
+nim	GamepadL1	paddy/common.html#GamepadL1	GamepadButton.GamepadL1		5
+nim	GamepadR1	paddy/common.html#GamepadR1	GamepadButton.GamepadR1		5
+nim	GamepadL2	paddy/common.html#GamepadL2	GamepadButton.GamepadL2		5
+nim	GamepadR2	paddy/common.html#GamepadR2	GamepadButton.GamepadR2		5
+nim	GamepadSelect	paddy/common.html#GamepadSelect	GamepadButton.GamepadSelect		5
+nim	GamepadStart	paddy/common.html#GamepadStart	GamepadButton.GamepadStart		5
+nim	GamepadL3	paddy/common.html#GamepadL3	GamepadButton.GamepadL3		5
+nim	GamepadR3	paddy/common.html#GamepadR3	GamepadButton.GamepadR3		5
+nim	GamepadUp	paddy/common.html#GamepadUp	GamepadButton.GamepadUp		5
+nim	GamepadDown	paddy/common.html#GamepadDown	GamepadButton.GamepadDown		5
+nim	GamepadLeft	paddy/common.html#GamepadLeft	GamepadButton.GamepadLeft		5
+nim	GamepadRight	paddy/common.html#GamepadRight	GamepadButton.GamepadRight		5
+nim	GamepadHome	paddy/common.html#GamepadHome	GamepadButton.GamepadHome		5
+nim	GamepadTouchpad	paddy/common.html#GamepadTouchpad	GamepadButton.GamepadTouchpad		5
+nim	GamepadButtonCount	paddy/common.html#GamepadButtonCount	GamepadButton.GamepadButtonCount		5
+nim	GamepadButton	paddy/common.html#GamepadButton	enum GamepadButton		5
+nim	GamepadLStickX	paddy/common.html#GamepadLStickX	GamepadAxis.GamepadLStickX		26
+nim	GamepadLStickY	paddy/common.html#GamepadLStickY	GamepadAxis.GamepadLStickY		26
+nim	GamepadRStickX	paddy/common.html#GamepadRStickX	GamepadAxis.GamepadRStickX		26
+nim	GamepadRStickY	paddy/common.html#GamepadRStickY	GamepadAxis.GamepadRStickY		26
+nim	GamepadAxisCount	paddy/common.html#GamepadAxisCount	GamepadAxis.GamepadAxisCount		26
+nim	GamepadAxis	paddy/common.html#GamepadAxis	enum GamepadAxis		26
+nim	Gamepad	paddy/common.html#Gamepad	object Gamepad		33
+nim	MaxGamepads	paddy/common.html#MaxGamepads	const MaxGamepads		43
+nim	button	paddy/common.html#button,Gamepad,GamepadButton	proc button(gamepad: Gamepad; button: GamepadButton): bool		45
+nim	buttonPressed	paddy/common.html#buttonPressed,Gamepad,GamepadButton	proc buttonPressed(gamepad: Gamepad; button: GamepadButton): bool		49
+nim	buttonReleased	paddy/common.html#buttonReleased,Gamepad,GamepadButton	proc buttonReleased(gamepad: Gamepad; button: GamepadButton): bool		53
+nim	buttonPressure	paddy/common.html#buttonPressure,Gamepad,GamepadButton	proc buttonPressure(gamepad: Gamepad; button: GamepadButton): float32		57
+nim	axis	paddy/common.html#axis,Gamepad,GamepadAxis	proc axis(gamepad: Gamepad; axis: GamepadAxis): float32		61

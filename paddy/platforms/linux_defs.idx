@@ -1,0 +1,75 @@
+nimTitle	linux_defs	paddy/platforms/linux_defs.html	module src/paddy/platforms/linux_defs		0
+nim	epoll_data_t	paddy/platforms/linux_defs.html#epoll_data_t	object epoll_data_t		4
+nim	epoll_event	paddy/platforms/linux_defs.html#epoll_event	object epoll_event		10
+nim	timeval	paddy/platforms/linux_defs.html#timeval	object timeval		14
+nim	input_event	paddy/platforms/linux_defs.html#input_event	object input_event		18
+nim	input_absinfo	paddy/platforms/linux_defs.html#input_absinfo	object input_absinfo		24
+nim	dev_t	paddy/platforms/linux_defs.html#dev_t	type dev_t		32
+nim	udev	paddy/platforms/linux_defs.html#udev	object udev		33
+nim	udev_list_entry	paddy/platforms/linux_defs.html#udev_list_entry	object udev_list_entry		34
+nim	udev_device	paddy/platforms/linux_defs.html#udev_device	object udev_device		35
+nim	udev_monitor	paddy/platforms/linux_defs.html#udev_monitor	object udev_monitor		36
+nim	udev_enumerate	paddy/platforms/linux_defs.html#udev_enumerate	object udev_enumerate		37
+nim	libevdev	paddy/platforms/linux_defs.html#libevdev	object libevdev		38
+nim	EPOLL_CTL_ADD	paddy/platforms/linux_defs.html#EPOLL_CTL_ADD	const EPOLL_CTL_ADD		41
+nim	EPOLL_CTL_DEL	paddy/platforms/linux_defs.html#EPOLL_CTL_DEL	const EPOLL_CTL_DEL		42
+nim	EPOLLIN	paddy/platforms/linux_defs.html#EPOLLIN	const EPOLLIN		43
+nim	EV_KEY	paddy/platforms/linux_defs.html#EV_KEY	const EV_KEY		45
+nim	EV_ABS	paddy/platforms/linux_defs.html#EV_ABS	const EV_ABS		46
+nim	BTN_A	paddy/platforms/linux_defs.html#BTN_A	const BTN_A		48
+nim	BTN_B	paddy/platforms/linux_defs.html#BTN_B	const BTN_B		49
+nim	BTN_X	paddy/platforms/linux_defs.html#BTN_X	const BTN_X		50
+nim	BTN_Y	paddy/platforms/linux_defs.html#BTN_Y	const BTN_Y		51
+nim	BTN_TL	paddy/platforms/linux_defs.html#BTN_TL	const BTN_TL		52
+nim	BTN_TR	paddy/platforms/linux_defs.html#BTN_TR	const BTN_TR		53
+nim	BTN_TL2	paddy/platforms/linux_defs.html#BTN_TL2	const BTN_TL2		54
+nim	BTN_TR2	paddy/platforms/linux_defs.html#BTN_TR2	const BTN_TR2		55
+nim	BTN_SELECT	paddy/platforms/linux_defs.html#BTN_SELECT	const BTN_SELECT		56
+nim	BTN_START	paddy/platforms/linux_defs.html#BTN_START	const BTN_START		57
+nim	BTN_MODE	paddy/platforms/linux_defs.html#BTN_MODE	const BTN_MODE		58
+nim	BTN_THUMBL	paddy/platforms/linux_defs.html#BTN_THUMBL	const BTN_THUMBL		59
+nim	BTN_THUMBR	paddy/platforms/linux_defs.html#BTN_THUMBR	const BTN_THUMBR		60
+nim	ABS_X	paddy/platforms/linux_defs.html#ABS_X	const ABS_X		62
+nim	ABS_Y	paddy/platforms/linux_defs.html#ABS_Y	const ABS_Y		63
+nim	ABS_Z	paddy/platforms/linux_defs.html#ABS_Z	const ABS_Z		64
+nim	ABS_RX	paddy/platforms/linux_defs.html#ABS_RX	const ABS_RX		65
+nim	ABS_RY	paddy/platforms/linux_defs.html#ABS_RY	const ABS_RY		66
+nim	ABS_RZ	paddy/platforms/linux_defs.html#ABS_RZ	const ABS_RZ		67
+nim	ABS_HAT0X	paddy/platforms/linux_defs.html#ABS_HAT0X	const ABS_HAT0X		68
+nim	ABS_HAT0Y	paddy/platforms/linux_defs.html#ABS_HAT0Y	const ABS_HAT0Y		69
+nim	LIBEVDEV_READ_FLAG_SYNC	paddy/platforms/linux_defs.html#LIBEVDEV_READ_FLAG_SYNC	const LIBEVDEV_READ_FLAG_SYNC		71
+nim	LIBEVDEV_READ_FLAG_NORMAL	paddy/platforms/linux_defs.html#LIBEVDEV_READ_FLAG_NORMAL	const LIBEVDEV_READ_FLAG_NORMAL		72
+nim	LIBEVDEV_READ_STATUS_SYNC	paddy/platforms/linux_defs.html#LIBEVDEV_READ_STATUS_SYNC	const LIBEVDEV_READ_STATUS_SYNC		73
+nim	epoll_create1	paddy/platforms/linux_defs.html#epoll_create1,cint	proc epoll_create1(flags: cint): cint		77
+nim	epoll_ctl	paddy/platforms/linux_defs.html#epoll_ctl,cint,cint,cint,ptr.epoll_event	proc epoll_ctl(epfd: cint; op: cint; fd: cint; event: ptr epoll_event): cint		78
+nim	epoll_wait	paddy/platforms/linux_defs.html#epoll_wait,cint,ptr.epoll_event,cint,cint	proc epoll_wait(epfd: cint; events: ptr epoll_event; maxevents: cint; timeout: cint): cint		79
+nim	udev_new	paddy/platforms/linux_defs.html#udev_new	proc udev_new(): ptr udev		86
+nim	udev_unref	paddy/platforms/linux_defs.html#udev_unref,ptr.udev	proc udev_unref(udev: ptr udev): ptr udev		87
+nim	udev_list_entry_get_next	paddy/platforms/linux_defs.html#udev_list_entry_get_next,ptr.udev_list_entry	proc udev_list_entry_get_next(list_entry: ptr udev_list_entry): ptr udev_list_entry		88
+nim	udev_list_entry_get_name	paddy/platforms/linux_defs.html#udev_list_entry_get_name,ptr.udev_list_entry	proc udev_list_entry_get_name(list_entry: ptr udev_list_entry): cstring		91
+nim	udev_device_new_from_syspath	paddy/platforms/linux_defs.html#udev_device_new_from_syspath,ptr.udev,cstring	proc udev_device_new_from_syspath(udev: ptr udev; syspath: cstring): ptr udev_device		92
+nim	udev_device_unref	paddy/platforms/linux_defs.html#udev_device_unref,ptr.udev_device	proc udev_device_unref(udev_device: ptr udev_device): ptr udev_device		96
+nim	udev_device_get_syspath	paddy/platforms/linux_defs.html#udev_device_get_syspath,ptr.udev_device	proc udev_device_get_syspath(udev_device: ptr udev_device): cstring		97
+nim	udev_device_get_devnode	paddy/platforms/linux_defs.html#udev_device_get_devnode,ptr.udev_device	proc udev_device_get_devnode(udev_device: ptr udev_device): cstring		98
+nim	udev_device_get_action	paddy/platforms/linux_defs.html#udev_device_get_action,ptr.udev_device	proc udev_device_get_action(udev_device: ptr udev_device): cstring		99
+nim	udev_device_get_property_value	paddy/platforms/linux_defs.html#udev_device_get_property_value,ptr.udev_device,cstring	proc udev_device_get_property_value(udev_device: ptr udev_device; key: cstring): cstring		100
+nim	udev_monitor_new_from_netlink	paddy/platforms/linux_defs.html#udev_monitor_new_from_netlink,ptr.udev,cstring	proc udev_monitor_new_from_netlink(udev: ptr udev; name: cstring): ptr udev_monitor		104
+nim	udev_monitor_unref	paddy/platforms/linux_defs.html#udev_monitor_unref,ptr.udev_monitor	proc udev_monitor_unref(udev_monitor: ptr udev_monitor): ptr udev_monitor		108
+nim	udev_monitor_filter_add_match_subsystem_devtype	paddy/platforms/linux_defs.html#udev_monitor_filter_add_match_subsystem_devtype,ptr.udev_monitor,cstring,cstring	proc udev_monitor_filter_add_match_subsystem_devtype(udev_monitor: ptr udev_monitor;\n    subsystem: cstring; devtype: cstring): cint		109
+nim	udev_monitor_enable_receiving	paddy/platforms/linux_defs.html#udev_monitor_enable_receiving,ptr.udev_monitor	proc udev_monitor_enable_receiving(udev_monitor: ptr udev_monitor): cint		114
+nim	udev_monitor_get_fd	paddy/platforms/linux_defs.html#udev_monitor_get_fd,ptr.udev_monitor	proc udev_monitor_get_fd(udev_monitor: ptr udev_monitor): cint		115
+nim	udev_monitor_receive_device	paddy/platforms/linux_defs.html#udev_monitor_receive_device,ptr.udev_monitor	proc udev_monitor_receive_device(udev_monitor: ptr udev_monitor): ptr udev_device		116
+nim	udev_enumerate_new	paddy/platforms/linux_defs.html#udev_enumerate_new,ptr.udev	proc udev_enumerate_new(udev: ptr udev): ptr udev_enumerate		117
+nim	udev_enumerate_unref	paddy/platforms/linux_defs.html#udev_enumerate_unref,ptr.udev_enumerate	proc udev_enumerate_unref(udev_enumerate: ptr udev_enumerate): ptr udev_enumerate		118
+nim	udev_enumerate_add_match_subsystem	paddy/platforms/linux_defs.html#udev_enumerate_add_match_subsystem,ptr.udev_enumerate,cstring	proc udev_enumerate_add_match_subsystem(udev_enumerate: ptr udev_enumerate;\n                                   subsystem: cstring): cint		119
+nim	udev_enumerate_add_match_property	paddy/platforms/linux_defs.html#udev_enumerate_add_match_property,ptr.udev_enumerate,cstring,cstring	proc udev_enumerate_add_match_property(udev_enumerate: ptr udev_enumerate;\n                                  property: cstring; value: cstring): cint		123
+nim	udev_enumerate_scan_devices	paddy/platforms/linux_defs.html#udev_enumerate_scan_devices,ptr.udev_enumerate	proc udev_enumerate_scan_devices(udev_enumerate: ptr udev_enumerate): cint		128
+nim	udev_enumerate_get_list_entry	paddy/platforms/linux_defs.html#udev_enumerate_get_list_entry,ptr.udev_enumerate	proc udev_enumerate_get_list_entry(udev_enumerate: ptr udev_enumerate): ptr udev_list_entry		129
+nim	libevdev_new_from_fd	paddy/platforms/linux_defs.html#libevdev_new_from_fd,cint,ptr.ptr.libevdev	proc libevdev_new_from_fd(fd: cint; dev: ptr ptr libevdev): cint		133
+nim	libevdev_free	paddy/platforms/linux_defs.html#libevdev_free,ptr.libevdev	proc libevdev_free(dev: ptr libevdev)		134
+nim	libevdev_get_fd	paddy/platforms/linux_defs.html#libevdev_get_fd,ptr.libevdev	proc libevdev_get_fd(dev: ptr libevdev): cint		135
+nim	libevdev_get_name	paddy/platforms/linux_defs.html#libevdev_get_name,ptr.libevdev	proc libevdev_get_name(dev: ptr libevdev): cstring		136
+nim	libevdev_has_event_code	paddy/platforms/linux_defs.html#libevdev_has_event_code,ptr.libevdev,uint16,uint16	proc libevdev_has_event_code(dev: ptr libevdev; type: uint16; code: uint16): bool		137
+nim	libevdev_get_abs_info	paddy/platforms/linux_defs.html#libevdev_get_abs_info,ptr.libevdev,uint16	proc libevdev_get_abs_info(dev: ptr libevdev; code: uint16): ptr input_absinfo		142
+nim	libevdev_next_event	paddy/platforms/linux_defs.html#libevdev_next_event,ptr.libevdev,cint,ptr.input_event	proc libevdev_next_event(dev: ptr libevdev; flags: cint; event: ptr input_event): cint		146
+nim	udev_list_entry_foreach	paddy/platforms/linux_defs.html#udev_list_entry_foreach.t,ptr.udev_list_entry,untyped	template udev_list_entry_foreach(first_entry: ptr udev_list_entry; body: untyped)		154
