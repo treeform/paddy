@@ -58,18 +58,29 @@
       <li><a class="reference" href="#Gamepad" title="Gamepad = object
   id*: int
   name*: string
-  buttons*: uint32
-  pressed*: uint32
-  released*: uint32
+  buttons*: uint64
+  pressed*: uint64
+  released*: uint64
   pressures*: array[GamepadButtonCount.int, float32]
   axes*: array[GamepadAxisCount.int, float32]">Gamepad</a></li>
 <li><a class="reference" href="#GamepadAxis" title="GamepadAxis = enum
   GamepadLStickX, GamepadLStickY, GamepadRStickX, GamepadRStickY,
+  GamepadLTrigger, GamepadRTrigger, GamepadThrottle, GamepadRudder,
   GamepadAxisCount">GamepadAxis</a></li>
 <li><a class="reference" href="#GamepadButton" title="GamepadButton = enum
   GamepadA, GamepadB, GamepadX, GamepadY, GamepadL1, GamepadR1, GamepadL2,
   GamepadR2, GamepadSelect, GamepadStart, GamepadL3, GamepadR3, GamepadUp,
   GamepadDown, GamepadLeft, GamepadRight, GamepadHome, GamepadTouchpad,
+  GamepadC, GamepadZ, GamepadGearDown, GamepadGearUp, GamepadGripL,
+  GamepadGripR, GamepadGripL2, GamepadGripR2, GamepadMisc0, GamepadMisc1,
+  GamepadMisc2, GamepadMisc3, GamepadMisc4, GamepadMisc5, GamepadMisc6,
+  GamepadMisc7, GamepadMisc8, GamepadMisc9, GamepadHappy1, GamepadHappy2,
+  GamepadHappy3, GamepadHappy4, GamepadHappy5, GamepadHappy6, GamepadHappy7,
+  GamepadHappy8, GamepadHappy9, GamepadHappy10, GamepadHappy11, GamepadHappy12,
+  GamepadHappy13, GamepadHappy14, GamepadHappy15, GamepadHappy16,
+  GamepadHappy17, GamepadHappy18, GamepadHappy19, GamepadHappy20,
+  GamepadHappy21, GamepadHappy22, GamepadHappy23, GamepadHappy24,
+  GamepadHappy25, GamepadHappy26, GamepadHappy27, GamepadHappy28,
   GamepadButtonCount">GamepadButton</a></li>
 <li><a class="reference" href="#PaddyError" title="PaddyError = object of ValueError">PaddyError</a></li>
 
@@ -131,28 +142,29 @@
   <dt><pre><a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">id</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">buttons</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint32</span>
-  <span class="Identifier">pressed</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint32</span>
-  <span class="Identifier">released</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint32</span>
+  <span class="Identifier">buttons</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint64</span>
+  <span class="Identifier">pressed</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint64</span>
+  <span class="Identifier">released</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint64</span>
   <span class="Identifier">pressures</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="Identifier">GamepadButtonCount</span><span class="Other">.</span><span class="Identifier">int</span><span class="Other">,</span> <span class="Identifier">float32</span><span class="Other">]</span>
   <span class="Identifier">axes</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="Identifier">GamepadAxisCount</span><span class="Other">.</span><span class="Identifier">int</span><span class="Other">,</span> <span class="Identifier">float32</span><span class="Other">]</span></pre></dt>
   <dd>
     
     
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L33" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L33" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L83" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L83" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
 <div id="GamepadAxis">
   <dt><pre><a href="common.html#GamepadAxis"><span class="Identifier">GamepadAxis</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
   <span class="Identifier">GamepadLStickX</span><span class="Other">,</span> <span class="Identifier">GamepadLStickY</span><span class="Other">,</span> <span class="Identifier">GamepadRStickX</span><span class="Other">,</span> <span class="Identifier">GamepadRStickY</span><span class="Other">,</span>
+  <span class="Identifier">GamepadLTrigger</span><span class="Other">,</span> <span class="Identifier">GamepadRTrigger</span><span class="Other">,</span> <span class="Identifier">GamepadThrottle</span><span class="Other">,</span> <span class="Identifier">GamepadRudder</span><span class="Other">,</span>
   <span class="Identifier">GamepadAxisCount</span></pre></dt>
   <dd>
     
     
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L26" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L26" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L72" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L72" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -161,6 +173,16 @@
   <span class="Identifier">GamepadA</span><span class="Other">,</span> <span class="Identifier">GamepadB</span><span class="Other">,</span> <span class="Identifier">GamepadX</span><span class="Other">,</span> <span class="Identifier">GamepadY</span><span class="Other">,</span> <span class="Identifier">GamepadL1</span><span class="Other">,</span> <span class="Identifier">GamepadR1</span><span class="Other">,</span> <span class="Identifier">GamepadL2</span><span class="Other">,</span>
   <span class="Identifier">GamepadR2</span><span class="Other">,</span> <span class="Identifier">GamepadSelect</span><span class="Other">,</span> <span class="Identifier">GamepadStart</span><span class="Other">,</span> <span class="Identifier">GamepadL3</span><span class="Other">,</span> <span class="Identifier">GamepadR3</span><span class="Other">,</span> <span class="Identifier">GamepadUp</span><span class="Other">,</span>
   <span class="Identifier">GamepadDown</span><span class="Other">,</span> <span class="Identifier">GamepadLeft</span><span class="Other">,</span> <span class="Identifier">GamepadRight</span><span class="Other">,</span> <span class="Identifier">GamepadHome</span><span class="Other">,</span> <span class="Identifier">GamepadTouchpad</span><span class="Other">,</span>
+  <span class="Identifier">GamepadC</span><span class="Other">,</span> <span class="Identifier">GamepadZ</span><span class="Other">,</span> <span class="Identifier">GamepadGearDown</span><span class="Other">,</span> <span class="Identifier">GamepadGearUp</span><span class="Other">,</span> <span class="Identifier">GamepadGripL</span><span class="Other">,</span>
+  <span class="Identifier">GamepadGripR</span><span class="Other">,</span> <span class="Identifier">GamepadGripL2</span><span class="Other">,</span> <span class="Identifier">GamepadGripR2</span><span class="Other">,</span> <span class="Identifier">GamepadMisc0</span><span class="Other">,</span> <span class="Identifier">GamepadMisc1</span><span class="Other">,</span>
+  <span class="Identifier">GamepadMisc2</span><span class="Other">,</span> <span class="Identifier">GamepadMisc3</span><span class="Other">,</span> <span class="Identifier">GamepadMisc4</span><span class="Other">,</span> <span class="Identifier">GamepadMisc5</span><span class="Other">,</span> <span class="Identifier">GamepadMisc6</span><span class="Other">,</span>
+  <span class="Identifier">GamepadMisc7</span><span class="Other">,</span> <span class="Identifier">GamepadMisc8</span><span class="Other">,</span> <span class="Identifier">GamepadMisc9</span><span class="Other">,</span> <span class="Identifier">GamepadHappy1</span><span class="Other">,</span> <span class="Identifier">GamepadHappy2</span><span class="Other">,</span>
+  <span class="Identifier">GamepadHappy3</span><span class="Other">,</span> <span class="Identifier">GamepadHappy4</span><span class="Other">,</span> <span class="Identifier">GamepadHappy5</span><span class="Other">,</span> <span class="Identifier">GamepadHappy6</span><span class="Other">,</span> <span class="Identifier">GamepadHappy7</span><span class="Other">,</span>
+  <span class="Identifier">GamepadHappy8</span><span class="Other">,</span> <span class="Identifier">GamepadHappy9</span><span class="Other">,</span> <span class="Identifier">GamepadHappy10</span><span class="Other">,</span> <span class="Identifier">GamepadHappy11</span><span class="Other">,</span> <span class="Identifier">GamepadHappy12</span><span class="Other">,</span>
+  <span class="Identifier">GamepadHappy13</span><span class="Other">,</span> <span class="Identifier">GamepadHappy14</span><span class="Other">,</span> <span class="Identifier">GamepadHappy15</span><span class="Other">,</span> <span class="Identifier">GamepadHappy16</span><span class="Other">,</span>
+  <span class="Identifier">GamepadHappy17</span><span class="Other">,</span> <span class="Identifier">GamepadHappy18</span><span class="Other">,</span> <span class="Identifier">GamepadHappy19</span><span class="Other">,</span> <span class="Identifier">GamepadHappy20</span><span class="Other">,</span>
+  <span class="Identifier">GamepadHappy21</span><span class="Other">,</span> <span class="Identifier">GamepadHappy22</span><span class="Other">,</span> <span class="Identifier">GamepadHappy23</span><span class="Other">,</span> <span class="Identifier">GamepadHappy24</span><span class="Other">,</span>
+  <span class="Identifier">GamepadHappy25</span><span class="Other">,</span> <span class="Identifier">GamepadHappy26</span><span class="Other">,</span> <span class="Identifier">GamepadHappy27</span><span class="Other">,</span> <span class="Identifier">GamepadHappy28</span><span class="Other">,</span>
   <span class="Identifier">GamepadButtonCount</span></pre></dt>
   <dd>
     
@@ -191,8 +213,8 @@
   <dd>
     
     
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L43" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L43" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L93" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L93" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -209,8 +231,8 @@
   <dd>
     
     Returns the value for the given axis.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L61" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L61" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L111" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L111" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -223,8 +245,8 @@
   <dd>
     
     Returns true when the button is currently down.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L45" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L45" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L95" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L95" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -237,8 +259,8 @@
   <dd>
     
     Returns true when the button was pressed this frame.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L49" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L49" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L99" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L99" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -251,8 +273,8 @@
   <dd>
     
     Returns the pressure for the given button.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L57" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L57" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L107" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L107" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -265,8 +287,8 @@
   <dd>
     
     Returns true when the button was released this frame.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L53" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L53" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/common.nim#L103" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/common.nim#L103" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -282,7 +304,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2026-03-24 05:27:14 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2026-03-24 22:53:03 UTC</small>
       </div>
     </div>
   </div>

@@ -18,18 +18,68 @@ nim	GamepadLeft	paddy/common.html#GamepadLeft	GamepadButton.GamepadLeft		5
 nim	GamepadRight	paddy/common.html#GamepadRight	GamepadButton.GamepadRight		5
 nim	GamepadHome	paddy/common.html#GamepadHome	GamepadButton.GamepadHome		5
 nim	GamepadTouchpad	paddy/common.html#GamepadTouchpad	GamepadButton.GamepadTouchpad		5
+nim	GamepadC	paddy/common.html#GamepadC	GamepadButton.GamepadC		5
+nim	GamepadZ	paddy/common.html#GamepadZ	GamepadButton.GamepadZ		5
+nim	GamepadGearDown	paddy/common.html#GamepadGearDown	GamepadButton.GamepadGearDown		5
+nim	GamepadGearUp	paddy/common.html#GamepadGearUp	GamepadButton.GamepadGearUp		5
+nim	GamepadGripL	paddy/common.html#GamepadGripL	GamepadButton.GamepadGripL		5
+nim	GamepadGripR	paddy/common.html#GamepadGripR	GamepadButton.GamepadGripR		5
+nim	GamepadGripL2	paddy/common.html#GamepadGripL2	GamepadButton.GamepadGripL2		5
+nim	GamepadGripR2	paddy/common.html#GamepadGripR2	GamepadButton.GamepadGripR2		5
+nim	GamepadMisc0	paddy/common.html#GamepadMisc0	GamepadButton.GamepadMisc0		5
+nim	GamepadMisc1	paddy/common.html#GamepadMisc1	GamepadButton.GamepadMisc1		5
+nim	GamepadMisc2	paddy/common.html#GamepadMisc2	GamepadButton.GamepadMisc2		5
+nim	GamepadMisc3	paddy/common.html#GamepadMisc3	GamepadButton.GamepadMisc3		5
+nim	GamepadMisc4	paddy/common.html#GamepadMisc4	GamepadButton.GamepadMisc4		5
+nim	GamepadMisc5	paddy/common.html#GamepadMisc5	GamepadButton.GamepadMisc5		5
+nim	GamepadMisc6	paddy/common.html#GamepadMisc6	GamepadButton.GamepadMisc6		5
+nim	GamepadMisc7	paddy/common.html#GamepadMisc7	GamepadButton.GamepadMisc7		5
+nim	GamepadMisc8	paddy/common.html#GamepadMisc8	GamepadButton.GamepadMisc8		5
+nim	GamepadMisc9	paddy/common.html#GamepadMisc9	GamepadButton.GamepadMisc9		5
+nim	GamepadHappy1	paddy/common.html#GamepadHappy1	GamepadButton.GamepadHappy1		5
+nim	GamepadHappy2	paddy/common.html#GamepadHappy2	GamepadButton.GamepadHappy2		5
+nim	GamepadHappy3	paddy/common.html#GamepadHappy3	GamepadButton.GamepadHappy3		5
+nim	GamepadHappy4	paddy/common.html#GamepadHappy4	GamepadButton.GamepadHappy4		5
+nim	GamepadHappy5	paddy/common.html#GamepadHappy5	GamepadButton.GamepadHappy5		5
+nim	GamepadHappy6	paddy/common.html#GamepadHappy6	GamepadButton.GamepadHappy6		5
+nim	GamepadHappy7	paddy/common.html#GamepadHappy7	GamepadButton.GamepadHappy7		5
+nim	GamepadHappy8	paddy/common.html#GamepadHappy8	GamepadButton.GamepadHappy8		5
+nim	GamepadHappy9	paddy/common.html#GamepadHappy9	GamepadButton.GamepadHappy9		5
+nim	GamepadHappy10	paddy/common.html#GamepadHappy10	GamepadButton.GamepadHappy10		5
+nim	GamepadHappy11	paddy/common.html#GamepadHappy11	GamepadButton.GamepadHappy11		5
+nim	GamepadHappy12	paddy/common.html#GamepadHappy12	GamepadButton.GamepadHappy12		5
+nim	GamepadHappy13	paddy/common.html#GamepadHappy13	GamepadButton.GamepadHappy13		5
+nim	GamepadHappy14	paddy/common.html#GamepadHappy14	GamepadButton.GamepadHappy14		5
+nim	GamepadHappy15	paddy/common.html#GamepadHappy15	GamepadButton.GamepadHappy15		5
+nim	GamepadHappy16	paddy/common.html#GamepadHappy16	GamepadButton.GamepadHappy16		5
+nim	GamepadHappy17	paddy/common.html#GamepadHappy17	GamepadButton.GamepadHappy17		5
+nim	GamepadHappy18	paddy/common.html#GamepadHappy18	GamepadButton.GamepadHappy18		5
+nim	GamepadHappy19	paddy/common.html#GamepadHappy19	GamepadButton.GamepadHappy19		5
+nim	GamepadHappy20	paddy/common.html#GamepadHappy20	GamepadButton.GamepadHappy20		5
+nim	GamepadHappy21	paddy/common.html#GamepadHappy21	GamepadButton.GamepadHappy21		5
+nim	GamepadHappy22	paddy/common.html#GamepadHappy22	GamepadButton.GamepadHappy22		5
+nim	GamepadHappy23	paddy/common.html#GamepadHappy23	GamepadButton.GamepadHappy23		5
+nim	GamepadHappy24	paddy/common.html#GamepadHappy24	GamepadButton.GamepadHappy24		5
+nim	GamepadHappy25	paddy/common.html#GamepadHappy25	GamepadButton.GamepadHappy25		5
+nim	GamepadHappy26	paddy/common.html#GamepadHappy26	GamepadButton.GamepadHappy26		5
+nim	GamepadHappy27	paddy/common.html#GamepadHappy27	GamepadButton.GamepadHappy27		5
+nim	GamepadHappy28	paddy/common.html#GamepadHappy28	GamepadButton.GamepadHappy28		5
 nim	GamepadButtonCount	paddy/common.html#GamepadButtonCount	GamepadButton.GamepadButtonCount		5
 nim	GamepadButton	paddy/common.html#GamepadButton	enum GamepadButton		5
-nim	GamepadLStickX	paddy/common.html#GamepadLStickX	GamepadAxis.GamepadLStickX		26
-nim	GamepadLStickY	paddy/common.html#GamepadLStickY	GamepadAxis.GamepadLStickY		26
-nim	GamepadRStickX	paddy/common.html#GamepadRStickX	GamepadAxis.GamepadRStickX		26
-nim	GamepadRStickY	paddy/common.html#GamepadRStickY	GamepadAxis.GamepadRStickY		26
-nim	GamepadAxisCount	paddy/common.html#GamepadAxisCount	GamepadAxis.GamepadAxisCount		26
-nim	GamepadAxis	paddy/common.html#GamepadAxis	enum GamepadAxis		26
-nim	Gamepad	paddy/common.html#Gamepad	object Gamepad		33
-nim	MaxGamepads	paddy/common.html#MaxGamepads	const MaxGamepads		43
-nim	button	paddy/common.html#button,Gamepad,GamepadButton	proc button(gamepad: Gamepad; button: GamepadButton): bool		45
-nim	buttonPressed	paddy/common.html#buttonPressed,Gamepad,GamepadButton	proc buttonPressed(gamepad: Gamepad; button: GamepadButton): bool		49
-nim	buttonReleased	paddy/common.html#buttonReleased,Gamepad,GamepadButton	proc buttonReleased(gamepad: Gamepad; button: GamepadButton): bool		53
-nim	buttonPressure	paddy/common.html#buttonPressure,Gamepad,GamepadButton	proc buttonPressure(gamepad: Gamepad; button: GamepadButton): float32		57
-nim	axis	paddy/common.html#axis,Gamepad,GamepadAxis	proc axis(gamepad: Gamepad; axis: GamepadAxis): float32		61
+nim	GamepadLStickX	paddy/common.html#GamepadLStickX	GamepadAxis.GamepadLStickX		72
+nim	GamepadLStickY	paddy/common.html#GamepadLStickY	GamepadAxis.GamepadLStickY		72
+nim	GamepadRStickX	paddy/common.html#GamepadRStickX	GamepadAxis.GamepadRStickX		72
+nim	GamepadRStickY	paddy/common.html#GamepadRStickY	GamepadAxis.GamepadRStickY		72
+nim	GamepadLTrigger	paddy/common.html#GamepadLTrigger	GamepadAxis.GamepadLTrigger		72
+nim	GamepadRTrigger	paddy/common.html#GamepadRTrigger	GamepadAxis.GamepadRTrigger		72
+nim	GamepadThrottle	paddy/common.html#GamepadThrottle	GamepadAxis.GamepadThrottle		72
+nim	GamepadRudder	paddy/common.html#GamepadRudder	GamepadAxis.GamepadRudder		72
+nim	GamepadAxisCount	paddy/common.html#GamepadAxisCount	GamepadAxis.GamepadAxisCount		72
+nim	GamepadAxis	paddy/common.html#GamepadAxis	enum GamepadAxis		72
+nim	Gamepad	paddy/common.html#Gamepad	object Gamepad		83
+nim	MaxGamepads	paddy/common.html#MaxGamepads	const MaxGamepads		93
+nim	button	paddy/common.html#button,Gamepad,GamepadButton	proc button(gamepad: Gamepad; button: GamepadButton): bool		95
+nim	buttonPressed	paddy/common.html#buttonPressed,Gamepad,GamepadButton	proc buttonPressed(gamepad: Gamepad; button: GamepadButton): bool		99
+nim	buttonReleased	paddy/common.html#buttonReleased,Gamepad,GamepadButton	proc buttonReleased(gamepad: Gamepad; button: GamepadButton): bool		103
+nim	buttonPressure	paddy/common.html#buttonPressure,Gamepad,GamepadButton	proc buttonPressure(gamepad: Gamepad; button: GamepadButton): float32		107
+nim	axis	paddy/common.html#axis,Gamepad,GamepadAxis	proc axis(gamepad: Gamepad; axis: GamepadAxis): float32		111
