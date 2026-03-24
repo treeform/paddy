@@ -1,26 +1,57 @@
+<img src="docs/paddy.png">
+
 # Paddy - A gamepad API for Nim.
 
-It is designed to pair well with [`windy`](https://github.com/treeform/windy), the window API. If your app needs windows, OpenGL/Metal/Vulkan/DirectX setup, mouse/keyboard input, and also gamepad input, the idea is:
+`nimby install paddy`
 
-- use `windy` for window creation and frame/update flow
-- use `paddy` for gamepad discovery, polling, buttons, triggers, sticks, and controller metadata
+![Github Actions](https://github.com/treeform/paddy/workflows/Github%20Actions/badge.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/treeform/paddy)
+![GitHub Repo stars](https://img.shields.io/github/stars/treeform/paddy)
+![GitHub](https://img.shields.io/github/license/treeform/paddy)
+![GitHub issues](https://img.shields.io/github/issues/treeform/paddy)
 
-This keeps gamepad support as an explicit opt-in. Projects that do not need controller input do not need to think about controller backends, platform-specific APIs, or extra runtime requirements.
+[API reference](https://treeform.github.io/paddy)
 
-Originally this was meant to be part of `windy`, but I did not want to add all of that extra complexity to `windy` itself. Gamepad support pulls in more platform-specific frameworks, APIs, dependencies, and setup requirements, so it made more sense to keep it as a separate library.
+## About
+
+Paddy is a gamepad API for Nim.
+
+It is designed to pair well with
+[`windy`](https://github.com/treeform/windy), the window API.
+If you are making a game that needs a gamepad, you can use `windy`
+for window creation and frame flow, and use `paddy` for gamepad
+discovery, polling, buttons, triggers, sticks, and controller
+metadata.
+
+Originally this was meant to be part of `windy`, but I did not want
+to add all of that extra complexity to `windy` itself. Gamepad
+support pulls in more platform-specific frameworks, APIs,
+dependencies, and setup requirements, so it made more sense to keep
+it as a separate library.
+
+This keeps gamepad support as an explicit opt-in. Projects that do
+not need controller input do not need to think about controller
+backends, platform-specific APIs, or extra runtime requirements.
+
+> **AI disclaimer: Much of this library was AI generated.**
+
+### Documentation
+
+The API reference is available here:
+[https://treeform.github.io/paddy](https://treeform.github.io/paddy)
 
 ## Goals
 
 - Provide a small, cross-platform Nim API for gamepads.
 - Work naturally alongside `windy`.
 - Poll controllers once per frame and read a consistent gamepad state.
-- Expose common gamepad concepts:
-  - connection status
-  - device name
-  - buttons
-  - button pressed/released edges
-  - trigger pressure
-  - analog stick axes
+- Expose common gamepad concepts.
+- Expose connection status.
+- Expose device names.
+- Expose buttons.
+- Expose button pressed and released edges.
+- Expose trigger pressure.
+- Expose analog stick axes.
 - Use native platform backends where possible.
 
 ## Why A Separate Library?
@@ -29,13 +60,17 @@ Gamepad input is not really part of window management.
 
 On each platform, controller support comes with different system APIs, frameworks, and setup requirements. Keeping that logic in a separate library makes the tradeoff explicit:
 
+- `windy` stays focused on windows and app flow.
+- `paddy` stays focused on gamepads.
+- users only opt into controller complexity if they need it.
+
 ## Platform Backends
 
 Paddy uses the native or standard controller API for each target platform.
 
 | Platform | Backend | Notes |
 | --- | --- | --- |
-| Windows | `GameInput` | Modern Microsoft gamepad API. May require the appropriate runtime/distribution to be present on the system. |
+| Windows | `XInput` | Standard Xbox-style controller API on Windows. |
 | macOS | `GameController.framework` / `GCController` | Native Apple gamepad/controller support. |
 | Linux | `udev` + `evdev` | Native Linux device enumeration and input polling. |
 | Emscripten / Web | HTML5 Gamepad API | Browser-provided gamepad support. |
