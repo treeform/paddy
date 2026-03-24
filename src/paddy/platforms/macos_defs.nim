@@ -11,7 +11,6 @@ type
   NSApplication* = distinct NSObject
   NSString* = macos_objc.NSString
 
-  GCDevice* = distinct NSObject
   GCController* = distinct NSObject
   GCPhysicalInputProfile* = distinct NSObject
   GCControllerElement* = distinct NSObject
@@ -53,8 +52,7 @@ objc:
     x: ID
   )
   proc physicalInputProfile*(self: GCController): GCPhysicalInputProfile
-  proc device*(self: GCController): GCDevice
-  proc vendorName*(self: GCDevice): NSString
+  proc vendorName*(self: GCController): NSString
   proc lastEventTimestamp*(self: GCPhysicalInputProfile): float64
   proc dpads*(self: GCPhysicalInputProfile): NSDictionary
   proc buttons*(self: GCPhysicalInputProfile): NSDictionary

@@ -117,10 +117,15 @@ proc assignController(slot: int, controller: GCController) =
     GamepadRStickY
   )
 
+  let vendorName = controller.vendorName()
   gamepadProfiles[slot] = profile
   gamepadMeta[slot].numButtons = numButtons.int8
   gamepadMeta[slot].numAxes = numAxes.int8
-  gamepadStates[slot].name = $controller.device().vendorName()
+  gamepadStates[slot].name =
+    if vendorName.int == 0:
+      ""
+    else:
+      $vendorName
 
 proc syncControllers() =
   ## Synchronizes the slot table with currently available controllers.
