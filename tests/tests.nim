@@ -6,7 +6,7 @@ doAssert MaxGamepads == 4
 
 block:
   var gamepad = Gamepad(id: 1, name: "Test Pad")
-  gamepad.buttons = 1'u32 shl GamepadA.int
+  gamepad.buttons = 1'u64 shl GamepadA.int
   gamepad.pressed = gamepad.buttons
   gamepad.pressures[GamepadA.int] = 1.0'f
   gamepad.axes[GamepadLStickX.int] = 0.5'f

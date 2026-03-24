@@ -194,8 +194,8 @@ proc pollGamepads*(): seq[Gamepad] =
       let epoch = profile.lastEventTimestamp()
       var state = addr gamepadStates[i]
       if epoch <= gamepadTimestamps[i]:
-        state.pressed = 0'u32
-        state.released = 0'u32
+        state.pressed = 0'u64
+        state.released = 0'u64
       else:
         gamepadTimestamps[i] = epoch
 
@@ -203,13 +203,13 @@ proc pollGamepads*(): seq[Gamepad] =
           state.axes[gamepadAxisLookup[i][j]] =
             gamepadAxisInputs[i][j].value()
 
-        var buttons = 0'u32
+        var buttons = 0'u64
         for j in 0 ..< gamepadMeta[i].numButtons:
           let button = gamepadButtonInputs[i][j]
           let index = gamepadButtonLookup[i][j]
           state.pressures[index] = button.value()
           if button.isPressed():
-            buttons = buttons or (1'u32 shl index)
+            buttons = buttons or (1'u64 shl index)
 
         gamepadUpdateButtons(state[], buttons)
 
