@@ -96,24 +96,24 @@ proc pollGamepads*(): seq[Gamepad] =
       clearState(i)
       continue
     elif status != ErrorSuccess:
-      state.pressed = 0'u32
-      state.released = 0'u32
+      state.pressed = 0'u64
+      state.released = 0'u64
       result.add state[].toGamepad(i)
       continue
 
     state.name = "XInput Controller " & $i
 
-    var buttons = 0'u32
+    var buttons = 0'u64
 
     template button(src: WORD, dst: GamepadButton) =
       if (xinputState.gamepad.wButtons and src) != 0:
-        buttons = buttons or (1'u32 shl dst.int)
+        buttons = buttons or (1'u64 shl dst.int)
 
     template remap(src: BYTE, dst: GamepadButton) =
       let value = normalizeTrigger(src)
       state.pressures[dst.int] = value
       if value > 0:
-        buttons = buttons or (1'u32 shl dst.int)
+        buttons = buttons or (1'u64 shl dst.int)
 
     state.axes[GamepadLStickX.int] = normalizeStick(
       xinputState.gamepad.sThumbLX,

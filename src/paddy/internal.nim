@@ -5,9 +5,9 @@ const
 
 type
   GamepadState* = object
-    buttons*: uint32
-    pressed*: uint32
-    released*: uint32
+    buttons*: uint64
+    pressed*: uint64
+    released*: uint64
     pressures*: array[GamepadButtonCount.int, float32]
     axes*: array[GamepadAxisCount.int, float32]
     name*: string
@@ -19,7 +19,7 @@ proc gamepadFilterDeadZone*(value: float32): float32 =
   else:
     value
 
-template gamepadUpdateButtons*(state: var GamepadState, buttons: uint32) =
+template gamepadUpdateButtons*(state: var GamepadState, buttons: uint64) =
   let prevButtons = state.buttons
   state.buttons = buttons
   state.pressed = buttons and (not prevButtons)

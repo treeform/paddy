@@ -230,7 +230,7 @@ proc pollGamepads*(): seq[Gamepad] =
       readFlag: cint = LIBEVDEV_READ_FLAG_NORMAL
 
     template btn(value: bool, id: GamepadButton) =
-      let bit = 1'u32 shl id.int
+      let bit = 1'u64 shl id.int
       if value:
         buttons = buttons or bit
       else:
@@ -253,10 +253,13 @@ proc pollGamepads*(): seq[Gamepad] =
         btn(
           inputEvent.value != 0,
           case inputEvent.code
+          # BTN_GAMEPAD range
           of BTN_A: GamepadA
           of BTN_B: GamepadB
+          of BTN_C: GamepadC
           of BTN_X: GamepadY
           of BTN_Y: GamepadX
+          of BTN_Z: GamepadZ
           of BTN_TL: GamepadL1
           of BTN_TR: GamepadR1
           of BTN_TL2: GamepadL2
@@ -266,6 +269,72 @@ proc pollGamepads*(): seq[Gamepad] =
           of BTN_MODE: GamepadHome
           of BTN_THUMBL: GamepadL3
           of BTN_THUMBR: GamepadR3
+          # BTN_JOYSTICK range
+          of BTN_TRIGGER: GamepadA
+          of BTN_THUMB: GamepadB
+          of BTN_THUMB2: GamepadX
+          of BTN_TOP: GamepadY
+          of BTN_TOP2: GamepadL1
+          of BTN_PINKIE: GamepadR1
+          of BTN_BASE: GamepadL2
+          of BTN_BASE2: GamepadR2
+          of BTN_BASE3: GamepadSelect
+          of BTN_BASE4: GamepadStart
+          of BTN_BASE5: GamepadHome
+          of BTN_BASE6: GamepadL3
+          # BTN_DPAD range
+          of BTN_DPAD_UP: GamepadUp
+          of BTN_DPAD_DOWN: GamepadDown
+          of BTN_DPAD_LEFT: GamepadLeft
+          of BTN_DPAD_RIGHT: GamepadRight
+          # BTN_GEAR range
+          of BTN_GEAR_DOWN: GamepadGearDown
+          of BTN_GEAR_UP: GamepadGearUp
+          # BTN_GRIP range
+          of BTN_GRIPL: GamepadGripL
+          of BTN_GRIPR: GamepadGripR
+          of BTN_GRIPL2: GamepadGripL2
+          of BTN_GRIPR2: GamepadGripR2
+          # BTN_MISC range
+          of BTN_0: GamepadMisc0
+          of BTN_1: GamepadMisc1
+          of BTN_2: GamepadMisc2
+          of BTN_3: GamepadMisc3
+          of BTN_4: GamepadMisc4
+          of BTN_5: GamepadMisc5
+          of BTN_6: GamepadMisc6
+          of BTN_7: GamepadMisc7
+          of BTN_8: GamepadMisc8
+          of BTN_9: GamepadMisc9
+          # BTN_TRIGGER_HAPPY range
+          of BTN_TRIGGER_HAPPY1: GamepadHappy1
+          of BTN_TRIGGER_HAPPY2: GamepadHappy2
+          of BTN_TRIGGER_HAPPY3: GamepadHappy3
+          of BTN_TRIGGER_HAPPY4: GamepadHappy4
+          of BTN_TRIGGER_HAPPY5: GamepadHappy5
+          of BTN_TRIGGER_HAPPY6: GamepadHappy6
+          of BTN_TRIGGER_HAPPY7: GamepadHappy7
+          of BTN_TRIGGER_HAPPY8: GamepadHappy8
+          of BTN_TRIGGER_HAPPY9: GamepadHappy9
+          of BTN_TRIGGER_HAPPY10: GamepadHappy10
+          of BTN_TRIGGER_HAPPY11: GamepadHappy11
+          of BTN_TRIGGER_HAPPY12: GamepadHappy12
+          of BTN_TRIGGER_HAPPY13: GamepadHappy13
+          of BTN_TRIGGER_HAPPY14: GamepadHappy14
+          of BTN_TRIGGER_HAPPY15: GamepadHappy15
+          of BTN_TRIGGER_HAPPY16: GamepadHappy16
+          of BTN_TRIGGER_HAPPY17: GamepadHappy17
+          of BTN_TRIGGER_HAPPY18: GamepadHappy18
+          of BTN_TRIGGER_HAPPY19: GamepadHappy19
+          of BTN_TRIGGER_HAPPY20: GamepadHappy20
+          of BTN_TRIGGER_HAPPY21: GamepadHappy21
+          of BTN_TRIGGER_HAPPY22: GamepadHappy22
+          of BTN_TRIGGER_HAPPY23: GamepadHappy23
+          of BTN_TRIGGER_HAPPY24: GamepadHappy24
+          of BTN_TRIGGER_HAPPY25: GamepadHappy25
+          of BTN_TRIGGER_HAPPY26: GamepadHappy26
+          of BTN_TRIGGER_HAPPY27: GamepadHappy27
+          of BTN_TRIGGER_HAPPY28: GamepadHappy28
           else:
             continue
         )

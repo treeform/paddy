@@ -104,12 +104,12 @@ proc pollGamepads*(): seq[Gamepad] =
 
     var
       state = addr gamepadStates[i]
-      buttons = 0'u32
+      buttons = 0'u64
 
     for j in 0 ..< GamepadButtonCount.int:
       state.pressures[j] = gamepad.analogButton[j].float32
       if gamepad.digitalButton[j]:
-        buttons = buttons or (1'u32 shl j)
+        buttons = buttons or (1'u64 shl j)
 
     for j in 0 ..< GamepadAxisCount.int:
       state.axes[j] = gamepadFilterDeadZone(gamepad.axis[j].float32)
