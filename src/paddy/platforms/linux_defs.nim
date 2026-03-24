@@ -134,6 +134,8 @@ const
   ABS_RX* = 0x03
   ABS_RY* = 0x04
   ABS_RZ* = 0x05
+  ABS_THROTTLE* = 0x06
+  ABS_RUDDER* = 0x07
   ABS_HAT0X* = 0x10
   ABS_HAT0Y* = 0x11
 

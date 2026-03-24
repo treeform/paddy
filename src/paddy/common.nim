@@ -74,6 +74,10 @@ type
     GamepadLStickY
     GamepadRStickX
     GamepadRStickY
+    GamepadLTrigger
+    GamepadRTrigger
+    GamepadThrottle
+    GamepadRudder
     GamepadAxisCount
 
   Gamepad* = object

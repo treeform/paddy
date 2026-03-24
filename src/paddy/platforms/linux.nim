@@ -11,7 +11,7 @@ var
   udevMonitorFd: cint
   devices: array[MaxGamepads, ptr libevdev]
   devicePaths: array[MaxGamepads, cstring]
-  deviceAbsInfo: array[MaxGamepads, array[6, ptr input_absinfo]]
+  deviceAbsInfo: array[MaxGamepads, array[8, ptr input_absinfo]]
   gamepadStates: array[MaxGamepads, GamepadState]
   defaultAbsInfo =
     input_absinfo(minimum: -32768, maximum: 32767)
@@ -25,7 +25,7 @@ proc raiseLinuxError(message: string) {.noreturn.} =
 
 proc resetAbsInfo(gamepadId: int) =
   ## Resets cached absolute axis metadata for a slot.
-  for j in 0 ..< 6:
+  for j in 0 ..< 8:
     deviceAbsInfo[gamepadId][j] = addr defaultAbsInfo
 
 proc strncmp(a: cstring, b: cstring, n: cint): cint {.importc, header: "<string.h>".}
@@ -67,7 +67,7 @@ proc handleDeviceEvent(device: ptr udev_device, added: bool) =
       devicePaths[i] = syspath
       gamepadStates[i].name = $libevdev_get_name(inputDevice)
 
-      for j in 0 ..< 6:
+      for j in 0 ..< 8:
         if not libevdev_has_event_code(inputDevice, EV_ABS, uint16 j):
           continue
 
@@ -366,9 +366,13 @@ proc pollGamepads*(): seq[Gamepad] =
         of ABS_RY:
           state.axes[GamepadRStickY.int] = axis()
         of ABS_Z:
-          pressure(GamepadL2)
+          state.axes[GamepadLTrigger.int] = axis()
         of ABS_RZ:
-          pressure(GamepadR2)
+          state.axes[GamepadRTrigger.int] = axis()
+        of ABS_THROTTLE:
+          state.axes[GamepadThrottle.int] = axis()
+        of ABS_RUDDER:
+          state.axes[GamepadRudder.int] = axis()
         of ABS_HAT0X:
           dpad(GamepadLeft, GamepadRight)
         of ABS_HAT0Y:
