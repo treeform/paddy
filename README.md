@@ -77,6 +77,20 @@ Paddy uses the native or standard controller API for each target platform.
 
 The exact support level and packaging details may vary by platform, but the public Nim API should stay consistent.
 
+## Requirements
+
+Paddy uses native platform APIs.
+
+On Linux, you need the `udev` and `evdev` development packages
+installed in order to build the library:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y libudev-dev libevdev-dev
+```
+
+This is required on Ubuntu and other Debian-based systems.
+
 ## Intended Usage
 
 The intended model is:
