@@ -19,7 +19,7 @@ type
     mapping*: array[64, char]
 
 const
-  EM_CALLBACK_THREAD_CONTEXT* = 1
+  EM_CALLBACK_THREAD_CONTEXT* = cast[pointer](1)
 
 proc strcmp*(a: cstring, b: cstring): cint {.importc, header: "<string.h>".}
 proc emscripten_sample_gamepad_data*(): cint {.
@@ -38,7 +38,7 @@ proc emscripten_set_gamepadconnected_callback_on_thread*(
     gamepadEvent: ptr EmscriptenGamepadEvent,
     userData: pointer
   ): EM_BOOL {.cdecl.},
-  targetThread: cint
+  targetThread: pointer
 ): cint {.importc, header: "<emscripten/html5.h>".}
 proc emscripten_set_gamepaddisconnected_callback_on_thread*(
   userData: pointer,
@@ -48,5 +48,5 @@ proc emscripten_set_gamepaddisconnected_callback_on_thread*(
     gamepadEvent: ptr EmscriptenGamepadEvent,
     userData: pointer
   ): EM_BOOL {.cdecl.},
-  targetThread: cint
+  targetThread: pointer
 ): cint {.importc, header: "<emscripten/html5.h>".}

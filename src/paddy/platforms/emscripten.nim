@@ -7,6 +7,20 @@ var
   gamepadsConnectedMask: uint8
   gamepadStates: array[MaxGamepads, GamepadState]
 
+proc toCString(buffer: openArray[char]): cstring =
+  ## Returns the start of a null-terminated char buffer.
+  if buffer.len == 0:
+    return nil
+  cast[cstring](unsafeAddr buffer[0])
+
+proc toString(buffer: openArray[char]): string =
+  ## Converts a null-terminated char buffer into a Nim string.
+  let value = buffer.toCString()
+  if value == nil:
+    ""
+  else:
+    $value
+
 proc onGamepadConnected(
   eventType: cint,
   gamepadEvent: ptr EmscriptenGamepadEvent,
@@ -16,10 +30,10 @@ proc onGamepadConnected(
   discard eventType
   discard userData
 
-  if strcmp(cast[cstring](addr gamepadEvent.mapping), "standard") == 0:
+  if strcmp(gamepadEvent.mapping.toCString(), "standard") == 0:
     gamepadsConnectedMask =
       gamepadsConnectedMask or (1'u8 shl gamepadEvent.index)
-    gamepadStates[gamepadEvent.index].name = $gamepadEvent.id
+    gamepadStates[gamepadEvent.index].name = gamepadEvent.id.toString()
   1
 
 proc onGamepadDisconnected(

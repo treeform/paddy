@@ -1,6 +1,9 @@
 import paddy/common
 
-when defined(windows):
+when defined(emscripten):
+  import paddy/platforms/emscripten
+  export emscripten
+elif defined(windows):
   import paddy/platforms/windows
   export windows
 elif defined(macosx):
@@ -9,9 +12,6 @@ elif defined(macosx):
 elif defined(linux):
   import paddy/platforms/linux
   export linux
-elif defined(emscripten):
-  import paddy/platforms/emscripten
-  export emscripten
 else:
   proc initGamepads*() =
     ## Initializes gamepad support on unsupported targets.
