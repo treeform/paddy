@@ -1,7 +1,8 @@
 import
   std/dynlib,
   ../[common, internal],
-  windows_defs
+  windows_defs,
+  windows_directinput
 
 var
   initialized: bool
@@ -11,7 +12,7 @@ var
     dwUserIndex: DWORD,
     pState: ptr XInputState
   ): DWORD {.stdcall.}
-  gamepadStates: array[MaxGamepads, GamepadState]
+  gamepadStates: array[XUserMaxCount, GamepadState]
 
 proc normalizeStick(value: SHORT, deadzone: SHORT): float32 =
   ## Normalizes a stick value to the -1..1 range.
@@ -40,7 +41,7 @@ proc normalizeTrigger(value: BYTE): float32 =
     (255.0'f - XInputGamepadTriggerThreshold.float32)
 
 proc initGamepads*() =
-  ## Initializes Windows gamepad support through XInput.
+  ## Initializes Windows gamepad support through XInput and DirectInput.
   if initialized:
     return
 
@@ -55,6 +56,8 @@ proc initGamepads*() =
     )
     xinputLoaded = xinputGetState != nil
 
+  initDirectInput()
+
   initialized = true
 
 proc clearState(index: int) =
@@ -67,8 +70,10 @@ proc closeGamepads*() =
   if not initialized:
     return
 
-  for i in 0 ..< MaxGamepads:
+  for i in 0 ..< XUserMaxCount:
     clearState(i)
+
+  closeDirectInput()
 
   if xinputLib != nil:
     unloadLib(xinputLib)
@@ -81,72 +86,77 @@ proc closeGamepads*() =
 
 proc pollGamepads*(): seq[Gamepad] =
   ## Polls Windows gamepads and returns connected snapshots.
+  ## XInput controllers appear first (slots 0-3), followed by
+  ## DirectInput controllers (slots 4-7).
   if not initialized:
     initGamepads()
 
-  if not xinputLoaded:
-    return
+  # Poll XInput devices (slots 0-3)
+  if xinputLoaded:
+    for i in 0 ..< XUserMaxCount:
+      var xinputState: XInputState
+      let status = xinputGetState(i.DWORD, addr xinputState)
 
-  for i in 0 ..< min(MaxGamepads, XUserMaxCount):
-    var xinputState: XInputState
-    let status = xinputGetState(i.DWORD, addr xinputState)
+      var state = addr gamepadStates[i]
+      if status == ErrorDeviceNotConnected:
+        clearState(i)
+        continue
+      elif status != ErrorSuccess:
+        state.pressed = 0'u64
+        state.released = 0'u64
+        result.add state[].toGamepad(i)
+        continue
 
-    var state = addr gamepadStates[i]
-    if status == ErrorDeviceNotConnected:
-      clearState(i)
-      continue
-    elif status != ErrorSuccess:
-      state.pressed = 0'u64
-      state.released = 0'u64
+      state.name = "XInput Controller " & $i
+
+      var buttons = 0'u64
+
+      template button(src: WORD, dst: GamepadButton) =
+        if (xinputState.gamepad.wButtons and src) != 0:
+          buttons = buttons or (1'u64 shl dst.int)
+
+      template remap(src: BYTE, dst: GamepadButton) =
+        let value = normalizeTrigger(src)
+        state.pressures[dst.int] = value
+        if value > 0:
+          buttons = buttons or (1'u64 shl dst.int)
+
+      state.axes[GamepadLStickX.int] = normalizeStick(
+        xinputState.gamepad.sThumbLX,
+        XInputGamepadLeftThumbDeadzone
+      )
+      state.axes[GamepadLStickY.int] = normalizeStick(
+        xinputState.gamepad.sThumbLY,
+        XInputGamepadLeftThumbDeadzone
+      )
+      state.axes[GamepadRStickX.int] = normalizeStick(
+        xinputState.gamepad.sThumbRX,
+        XInputGamepadRightThumbDeadzone
+      )
+      state.axes[GamepadRStickY.int] = normalizeStick(
+        xinputState.gamepad.sThumbRY,
+        XInputGamepadRightThumbDeadzone
+      )
+      remap(xinputState.gamepad.bLeftTrigger, GamepadL2)
+      remap(xinputState.gamepad.bRightTrigger, GamepadR2)
+      button(XInputGamepadStart, GamepadStart)
+      button(XInputGamepadBack, GamepadSelect)
+      button(XInputGamepadA, GamepadA)
+      button(XInputGamepadB, GamepadB)
+      button(XInputGamepadX, GamepadX)
+      button(XInputGamepadY, GamepadY)
+      button(XInputGamepadDpadUp, GamepadUp)
+      button(XInputGamepadDpadDown, GamepadDown)
+      button(XInputGamepadDpadLeft, GamepadLeft)
+      button(XInputGamepadDpadRight, GamepadRight)
+      button(XInputGamepadLeftShoulder, GamepadL1)
+      button(XInputGamepadRightShoulder, GamepadR1)
+      button(XInputGamepadLeftThumb, GamepadL3)
+      button(XInputGamepadRightThumb, GamepadR3)
+
+      gamepadUpdateButtons(state[], buttons)
       result.add state[].toGamepad(i)
-      continue
 
-    state.name = "XInput Controller " & $i
-
-    var buttons = 0'u64
-
-    template button(src: WORD, dst: GamepadButton) =
-      if (xinputState.gamepad.wButtons and src) != 0:
-        buttons = buttons or (1'u64 shl dst.int)
-
-    template remap(src: BYTE, dst: GamepadButton) =
-      let value = normalizeTrigger(src)
-      state.pressures[dst.int] = value
-      if value > 0:
-        buttons = buttons or (1'u64 shl dst.int)
-
-    state.axes[GamepadLStickX.int] = normalizeStick(
-      xinputState.gamepad.sThumbLX,
-      XInputGamepadLeftThumbDeadzone
-    )
-    state.axes[GamepadLStickY.int] = normalizeStick(
-      xinputState.gamepad.sThumbLY,
-      XInputGamepadLeftThumbDeadzone
-    )
-    state.axes[GamepadRStickX.int] = normalizeStick(
-      xinputState.gamepad.sThumbRX,
-      XInputGamepadRightThumbDeadzone
-    )
-    state.axes[GamepadRStickY.int] = normalizeStick(
-      xinputState.gamepad.sThumbRY,
-      XInputGamepadRightThumbDeadzone
-    )
-    remap(xinputState.gamepad.bLeftTrigger, GamepadL2)
-    remap(xinputState.gamepad.bRightTrigger, GamepadR2)
-    button(XInputGamepadStart, GamepadStart)
-    button(XInputGamepadBack, GamepadSelect)
-    button(XInputGamepadA, GamepadA)
-    button(XInputGamepadB, GamepadB)
-    button(XInputGamepadX, GamepadX)
-    button(XInputGamepadY, GamepadY)
-    button(XInputGamepadDpadUp, GamepadUp)
-    button(XInputGamepadDpadDown, GamepadDown)
-    button(XInputGamepadDpadLeft, GamepadLeft)
-    button(XInputGamepadDpadRight, GamepadRight)
-    button(XInputGamepadLeftShoulder, GamepadL1)
-    button(XInputGamepadRightShoulder, GamepadR1)
-    button(XInputGamepadLeftThumb, GamepadL3)
-    button(XInputGamepadRightThumb, GamepadR3)
-
-    gamepadUpdateButtons(state[], buttons)
-    result.add state[].toGamepad(i)
+  # Poll DirectInput devices (slots 4-7)
+  let dinputGamepads = pollDirectInput(XUserMaxCount)
+  result.add dinputGamepads

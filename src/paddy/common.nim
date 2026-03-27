@@ -90,7 +90,7 @@ type
     axes*: array[GamepadAxisCount.int, float32]
 
 const
-  MaxGamepads* = 4
+  MaxGamepads* = 8
 
 proc button*(gamepad: Gamepad, button: GamepadButton): bool =
   ## Returns true when the button is currently down.
