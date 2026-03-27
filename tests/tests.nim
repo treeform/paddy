@@ -2,7 +2,7 @@ import paddy
 
 echo "Testing paddy"
 
-doAssert MaxGamepads == 4
+doAssert MaxGamepads == 8
 
 block:
   var gamepad = Gamepad(id: 1, name: "Test Pad")
