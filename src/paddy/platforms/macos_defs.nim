@@ -47,6 +47,10 @@ objc:
   proc objectAtIndex*(self: NSArray, x: uint): ID
   proc valueForKey*(self: NSDictionary, x: NSString): ID
   proc controllers*(class: typedesc[GCController]): NSArray
+  proc setShouldMonitorBackgroundEvents*(
+    class: typedesc[GCController],
+    x: bool
+  )
   proc startWirelessControllerDiscoveryWithCompletionHandler*(
     class: typedesc[GCController],
     x: ID

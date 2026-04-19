@@ -163,6 +163,7 @@ proc initGamepads*() =
 
   autoreleasepool:
     discard NSApplication.sharedApplication()
+    GCController.setShouldMonitorBackgroundEvents(true)
     GCController.startWirelessControllerDiscoveryWithCompletionHandler(0.ID)
     syncControllers()
 
