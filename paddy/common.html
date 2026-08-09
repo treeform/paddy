@@ -16,13 +16,16 @@
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QQQEwksSS9ZWwAAAk1JREFUWMPtll2ITVEUx39nn/O7Y5qR8f05wtCUUr6ZIS++8pEnkZInPImneaCQ5METNdOkeFBKUhMPRIkHKfEuUZSUlGlKPN2TrgfncpvmnntnmlEyq1Z7t89/rf9a6+y99oZxGZf/XeIq61EdtgKXgdXA0xrYAvBjOIF1AI9zvjcC74BSpndrJPkBWDScTF8Aa4E3wDlgHbASaANmVqlcCnwHvgDvgVfAJ+AikAAvgfVZwLnSVZHZaOuKoQi3ZOMi4NkYkpe1p4J7A8BpYAD49hfIy/oqG0+hLomiKP2L5L+1ubn5115S+3OAn4EnwBlgMzCjyt6ZAnQCJ4A7wOs88iRJHvw50HoujuPBoCKwHWiosy8MdfZnAdcHk8dxXFJ3VQbQlCTJvRBCGdRbD4M6uc5glpY3eAihpN5S5w12diSEcCCEcKUO4ljdr15T76ur1FDDLIQQ3qv71EdDOe3Kxj3leRXyk+pxdWnFWod6Wt2bY3de3aSuUHcPBVimHs7mK9WrmeOF6lR1o9qnzskh2ar2qm1qizpfXaPeVGdlmGN5pb09qMxz1Xb1kLqgzn1RyH7JUXW52lr5e/Kqi9qpto7V1atuUzfnARrV7jEib1T76gG2qxdGmXyiekkt1GswPTtek0aBfJp6YySGBfWg2tPQ0FAYgf1stUfdmdcjarbYJEniKIq6gY/Aw+zWHAC+p2labGpqiorFYgGYCEzN7oQdQClN07O1/EfDyGgC0ALMBdYAi4FyK+4H3gLPsxfR1zRNi+NP7nH5J+QntnXe5B5mpfQAAAAASUVORK5CYII=">
 
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="../nimdoc.out.css?v=2.2.6">
+<link rel="stylesheet" type="text/css" href="../nimdoc.out.css?v=2.2.10">
 
 <!-- JS -->
-<script type="text/javascript" src="../dochack.js?v=2.2.6"></script>
+<script type="text/javascript" src="../dochack.js?v=2.2.10"></script>
 </head>
 <body>
   <div class="document" id="documentId">
+    <input type="checkbox" id="nav-toggle" hidden>
+    <label for="nav-toggle" id="nav-burger">&#9776;</label>
+    <label for="nav-toggle" id="nav-overlay"></label>
     <div class="container">
       <h1 class="title">src/paddy/common</h1>
       <div class="row">
@@ -139,7 +142,7 @@
   <h1><a class="toc-backref" href="#7">Types</a></h1>
   <dl class="item">
     <div id="Gamepad">
-  <dt><pre><a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
+  <dt><pre><a href="#Gamepad"><span class="Identifier">Gamepad</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">id</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">buttons</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint64</span>
@@ -156,7 +159,7 @@
   </dd>
 </div>
 <div id="GamepadAxis">
-  <dt><pre><a href="common.html#GamepadAxis"><span class="Identifier">GamepadAxis</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <dt><pre><a href="#GamepadAxis"><span class="Identifier">GamepadAxis</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
   <span class="Identifier">GamepadLStickX</span><span class="Other">,</span> <span class="Identifier">GamepadLStickY</span><span class="Other">,</span> <span class="Identifier">GamepadRStickX</span><span class="Other">,</span> <span class="Identifier">GamepadRStickY</span><span class="Other">,</span>
   <span class="Identifier">GamepadLTrigger</span><span class="Other">,</span> <span class="Identifier">GamepadRTrigger</span><span class="Other">,</span> <span class="Identifier">GamepadThrottle</span><span class="Other">,</span> <span class="Identifier">GamepadRudder</span><span class="Other">,</span>
   <span class="Identifier">GamepadAxisCount</span></pre></dt>
@@ -169,7 +172,7 @@
   </dd>
 </div>
 <div id="GamepadButton">
-  <dt><pre><a href="common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <dt><pre><a href="#GamepadButton"><span class="Identifier">GamepadButton</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
   <span class="Identifier">GamepadA</span><span class="Other">,</span> <span class="Identifier">GamepadB</span><span class="Other">,</span> <span class="Identifier">GamepadX</span><span class="Other">,</span> <span class="Identifier">GamepadY</span><span class="Other">,</span> <span class="Identifier">GamepadL1</span><span class="Other">,</span> <span class="Identifier">GamepadR1</span><span class="Other">,</span> <span class="Identifier">GamepadL2</span><span class="Other">,</span>
   <span class="Identifier">GamepadR2</span><span class="Other">,</span> <span class="Identifier">GamepadSelect</span><span class="Other">,</span> <span class="Identifier">GamepadStart</span><span class="Other">,</span> <span class="Identifier">GamepadL3</span><span class="Other">,</span> <span class="Identifier">GamepadR3</span><span class="Other">,</span> <span class="Identifier">GamepadUp</span><span class="Other">,</span>
   <span class="Identifier">GamepadDown</span><span class="Other">,</span> <span class="Identifier">GamepadLeft</span><span class="Other">,</span> <span class="Identifier">GamepadRight</span><span class="Other">,</span> <span class="Identifier">GamepadHome</span><span class="Other">,</span> <span class="Identifier">GamepadTouchpad</span><span class="Other">,</span>
@@ -193,7 +196,7 @@
   </dd>
 </div>
 <div id="PaddyError">
-  <dt><pre><a href="common.html#PaddyError"><span class="Identifier">PaddyError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">ValueError</span></pre></dt>
+  <dt><pre><a href="#PaddyError"><span class="Identifier">PaddyError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">ValueError</span></pre></dt>
   <dd>
     
     
@@ -209,7 +212,7 @@
   <h1><a class="toc-backref" href="#10">Consts</a></h1>
   <dl class="item">
     <div id="MaxGamepads">
-  <dt><pre><a href="common.html#MaxGamepads"><span class="Identifier">MaxGamepads</span></a> <span class="Other">=</span> <span class="DecNumber">8</span></pre></dt>
+  <dt><pre><a href="#MaxGamepads"><span class="Identifier">MaxGamepads</span></a> <span class="Other">=</span> <span class="DecNumber">8</span></pre></dt>
   <dd>
     
     
@@ -226,7 +229,7 @@
   <dl class="item">
     <div id="axis-procs-all">
   <div id="axis,Gamepad,GamepadAxis">
-  <dt><pre><span class="Keyword">proc</span> <a href="#axis%2CGamepad%2CGamepadAxis"><span class="Identifier">axis</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">axis</span><span class="Other">:</span> <a href="common.html#GamepadAxis"><span class="Identifier">GamepadAxis</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float32</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#axis%2CGamepad%2CGamepadAxis"><span class="Identifier">axis</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">axis</span><span class="Other">:</span> <a href="#GamepadAxis"><span class="Identifier">GamepadAxis</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float32</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -240,7 +243,7 @@
 </div>
 <div id="button-procs-all">
   <div id="button,Gamepad,GamepadButton">
-  <dt><pre><span class="Keyword">proc</span> <a href="#button%2CGamepad%2CGamepadButton"><span class="Identifier">button</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#button%2CGamepad%2CGamepadButton"><span class="Identifier">button</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -254,7 +257,7 @@
 </div>
 <div id="buttonPressed-procs-all">
   <div id="buttonPressed,Gamepad,GamepadButton">
-  <dt><pre><span class="Keyword">proc</span> <a href="#buttonPressed%2CGamepad%2CGamepadButton"><span class="Identifier">buttonPressed</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#buttonPressed%2CGamepad%2CGamepadButton"><span class="Identifier">buttonPressed</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -268,7 +271,7 @@
 </div>
 <div id="buttonPressure-procs-all">
   <div id="buttonPressure,Gamepad,GamepadButton">
-  <dt><pre><span class="Keyword">proc</span> <a href="#buttonPressure%2CGamepad%2CGamepadButton"><span class="Identifier">buttonPressure</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float32</span> {.
+  <dt><pre><span class="Keyword">proc</span> <a href="#buttonPressure%2CGamepad%2CGamepadButton"><span class="Identifier">buttonPressure</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float32</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -282,7 +285,7 @@
 </div>
 <div id="buttonReleased-procs-all">
   <div id="buttonReleased,Gamepad,GamepadButton">
-  <dt><pre><span class="Keyword">proc</span> <a href="#buttonReleased%2CGamepad%2CGamepadButton"><span class="Identifier">buttonReleased</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#buttonReleased%2CGamepad%2CGamepadButton"><span class="Identifier">buttonReleased</span></a><span class="Other">(</span><span class="Identifier">gamepad</span><span class="Other">:</span> <a href="#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">;</span> <span class="Identifier">button</span><span class="Other">:</span> <a href="#GamepadButton"><span class="Identifier">GamepadButton</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -304,7 +307,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2026-04-19 21:58:46 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2026-08-09 19:25:48 UTC</small>
       </div>
     </div>
   </div>
