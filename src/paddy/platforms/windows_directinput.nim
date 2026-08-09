@@ -10,10 +10,16 @@ const
   AxisSettlePolls = 30  ## Consecutive same-value polls before recalibrating
 
 type
+  ButtonLayout = enum
+    ## Raw button index layouts for devices we recognize by product name.
+    LayoutStandard  ## Best-guess layout for unknown devices
+    LayoutXboxBluetooth  ## Xbox pads over Bluetooth (HID report order)
+
   DinputDeviceInfo = object
     device: ptr IDirectInputDevice8W
     guidInstance: GUID
     connected: bool
+    layout: ButtonLayout
     numButtons: int
     numAxes: int
     numPovs: int
@@ -87,6 +93,17 @@ proc isXInputDevice(deviceInstance: ptr DIDEVICEINSTANCEW): bool =
   ## Returns true if this device is an XInput controller.
   ## Uses the Microsoft-documented "IG_" check on product name.
   wcharContains(deviceInstance.tszProductName, "IG_")
+
+proc detectLayout(deviceInstance: ptr DIDEVICEINSTANCEW): ButtonLayout =
+  ## Picks a button layout based on the device's product name.
+  ## Xbox pads over Bluetooth bypass XInput ("Bluetooth LE XINPUT
+  ## compatible input device", "Xbox Wireless Controller") and report
+  ## buttons in HID report order, which differs from the common layout.
+  if wcharContains(deviceInstance.tszProductName, "XINPUT") or
+      wcharContains(deviceInstance.tszProductName, "XBOX"):
+    LayoutXboxBluetooth
+  else:
+    LayoutStandard
 
 proc findFreeSlot(): int =
   ## Returns the index of a free DI device slot, or -1 if full.
@@ -204,6 +221,7 @@ proc setupDevice(slot: int, deviceInstance: ptr DIDEVICEINSTANCEW): bool =
   dinputDevices[slot].device = device
   dinputDevices[slot].guidInstance = deviceInstance.guidInstance
   dinputDevices[slot].connected = true
+  dinputDevices[slot].layout = detectLayout(deviceInstance)
   dinputDevices[slot].numButtons = int caps.dwButtons
   dinputDevices[slot].numAxes = int caps.dwAxes
   dinputDevices[slot].numPovs = int caps.dwPOVs
@@ -532,37 +550,56 @@ proc pollDirectInput*(slotOffset: int): seq[Gamepad] =
     if devInfo.numPovs > 0:
       mapPov(joyState.rgdwPOV[0], buttons)
 
-    # Map buttons (best-guess standard layout)
+    # Map buttons based on the device's detected layout
     let numBtns = min(devInfo.numButtons, 128)
     for j in 0 ..< numBtns:
       if (joyState.rgbButtons[j] and 0x80'u8) != 0:
         let mappedButton =
-          case j
-          of 0: GamepadA
-          of 1: GamepadB
-          of 2: GamepadX
-          of 3: GamepadY
-          of 4: GamepadL1
-          of 5: GamepadR1
-          of 6: GamepadL2
-          of 7: GamepadR2
-          of 8: GamepadSelect
-          of 9: GamepadStart
-          of 10: GamepadL3
-          of 11: GamepadR3
-          of 12: GamepadHome
-          of 13: GamepadTouchpad
-          of 14: GamepadMisc0
-          of 15: GamepadMisc1
-          of 16: GamepadMisc2
-          of 17: GamepadMisc3
-          of 18: GamepadMisc4
-          of 19: GamepadMisc5
-          of 20: GamepadMisc6
-          of 21: GamepadMisc7
-          of 22: GamepadMisc8
-          of 23: GamepadMisc9
-          else: continue
+          case devInfo.layout
+          of LayoutXboxBluetooth:
+            # HID report order with gaps at 2, 5, 8 and 9
+            case j
+            of 0: GamepadA
+            of 1: GamepadB
+            of 3: GamepadX
+            of 4: GamepadY
+            of 6: GamepadL1
+            of 7: GamepadR1
+            of 10: GamepadSelect  # View
+            of 11: GamepadStart   # Menu
+            of 12: GamepadHome    # Xbox
+            of 13: GamepadL3
+            of 14: GamepadR3
+            of 15: GamepadMisc0   # Share (Series pads)
+            else: continue
+          of LayoutStandard:
+            # Best-guess layout for unknown devices
+            case j
+            of 0: GamepadA
+            of 1: GamepadB
+            of 2: GamepadX
+            of 3: GamepadY
+            of 4: GamepadL1
+            of 5: GamepadR1
+            of 6: GamepadL2
+            of 7: GamepadR2
+            of 8: GamepadSelect
+            of 9: GamepadStart
+            of 10: GamepadL3
+            of 11: GamepadR3
+            of 12: GamepadHome
+            of 13: GamepadTouchpad
+            of 14: GamepadMisc0
+            of 15: GamepadMisc1
+            of 16: GamepadMisc2
+            of 17: GamepadMisc3
+            of 18: GamepadMisc4
+            of 19: GamepadMisc5
+            of 20: GamepadMisc6
+            of 21: GamepadMisc7
+            of 22: GamepadMisc8
+            of 23: GamepadMisc9
+            else: continue
         buttons = buttons or (1'u64 shl mappedButton.int)
 
     gamepadUpdateButtons(state[], buttons)
