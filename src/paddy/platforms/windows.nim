@@ -157,6 +157,7 @@ proc pollGamepads*(): seq[Gamepad] =
       gamepadUpdateButtons(state[], buttons)
       result.add state[].toGamepad(i)
 
-  # Poll DirectInput devices (slots 4-7)
-  let dinputGamepads = pollDirectInput(XUserMaxCount)
+  # Poll DirectInput devices (slots 4-7). Tell it whether an XInput pad
+  # is already connected so it can skip the expensive hot-plug scan.
+  let dinputGamepads = pollDirectInput(XUserMaxCount, result.len > 0)
   result.add dinputGamepads

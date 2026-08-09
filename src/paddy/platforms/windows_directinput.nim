@@ -6,7 +6,11 @@ import
 
 const
   MaxDinputDevices* = MaxGamepads - XUserMaxCount  ## Slots available for DI
-  EnumerateIntervalSec = 2.0  ## Re-enumerate devices every 2 seconds
+  EnumerateIntervalSec = 4.0
+    ## Re-enumerate devices for hot-plug detection at most this often.
+    ## EnumDevices is synchronous and can block for hundreds of
+    ## milliseconds (especially with Bluetooth radios), so the poll skips
+    ## it entirely while any controller is already connected.
   AxisSettlePolls = 30  ## Consecutive same-value polls before recalibrating
 
 type
@@ -415,15 +419,25 @@ proc mapPov(povValue: uint32, buttons: var uint64) =
   if angle >= 22500 and angle <= 31500:
     setBtn(GamepadLeft)
 
-proc pollDirectInput*(slotOffset: int): seq[Gamepad] =
+proc pollDirectInput*(slotOffset: int, othersConnected = false): seq[Gamepad] =
   ## Polls DirectInput devices and returns connected gamepad snapshots.
   ## slotOffset is added to local indices to produce Gamepad.id values.
+  ## othersConnected tells us a controller is already live elsewhere
+  ## (XInput), so the expensive hot-plug scan can be skipped.
   if not dinputLoaded:
     return
 
-  # Periodic re-enumeration for hot-plug detection
+  # Periodic re-enumeration for hot-plug detection. EnumDevices blocks
+  # the caller for up to hundreds of milliseconds, so only scan while
+  # nothing at all is connected, a stall in an empty menu is harmless
+  # but a stall during play is a dropped frame and an audio pop.
+  var anyConnected = othersConnected
+  for i in 0 ..< MaxDinputDevices:
+    if dinputDevices[i].connected:
+      anyConnected = true
+      break
   let now = epochTime()
-  if now - lastEnumerateTime >= EnumerateIntervalSec:
+  if not anyConnected and now - lastEnumerateTime >= EnumerateIntervalSec:
     enumerateDevices()
     lastEnumerateTime = now
 
