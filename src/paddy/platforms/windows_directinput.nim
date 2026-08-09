@@ -480,7 +480,14 @@ proc pollDirectInput*(slotOffset: int): seq[Gamepad] =
         inc devInfo.axisStable[a]
         if devInfo.axisStable[a] == AxisSettlePolls and
             rawAxes[a] != devInfo.axisCenter[a]:
-          devInfo.axisCenter[a] = rawAxes[a]
+          # Only adopt small drift near the current center. A stick held
+          # at full deflection also reads perfectly stable, and must not
+          # become the new center, or releasing it inverts the axis.
+          let
+            span = devInfo.axisRanges[a].max - devInfo.axisRanges[a].min
+            drift = abs(rawAxes[a].int64 - devInfo.axisCenter[a].int64)
+          if span > 0 and drift * 10 < span.int64:
+            devInfo.axisCenter[a] = rawAxes[a]
       else:
         devInfo.axisStable[a] = 0
       devInfo.axisPrev[a] = rawAxes[a]
