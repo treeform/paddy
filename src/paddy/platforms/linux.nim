@@ -237,16 +237,14 @@ proc pollGamepads*(): seq[Gamepad] =
         buttons = buttons and (not bit)
 
     while true:
-      case libevdev_next_event(device, readFlag, addr inputEvent)
-      of LIBEVDEV_READ_STATUS_SYNC:
+      let rc = libevdev_next_event(device, readFlag, addr inputEvent)
+      if rc == LIBEVDEV_READ_STATUS_SYNC:
         readFlag = LIBEVDEV_READ_FLAG_SYNC
-      of -EAGAIN:
+      elif rc == -EAGAIN:
         if readFlag == LIBEVDEV_READ_FLAG_SYNC:
           readFlag = LIBEVDEV_READ_FLAG_NORMAL
         else:
           break
-      else:
-        discard
 
       case inputEvent.`type`
       of EV_KEY:
