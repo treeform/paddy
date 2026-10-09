@@ -23,6 +23,9 @@ proc sampleGamepad(gamepad: paddy.Gamepad) =
       echo gamepad.name, " axis ", axis, ": ", value
 
 while not window.closeRequested:
+  # Explicit discovery may block. Run only when the player requests a scan.
+  if window.buttonPressed[KeyF5]:
+    discoverGamepads()
   for gamepad in pollGamepads():
     sampleGamepad(gamepad)
 

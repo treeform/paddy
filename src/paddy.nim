@@ -25,4 +25,10 @@ else:
     ## Returns an empty set of gamepads on unsupported targets.
     @[]
 
+when not defined(windows) or defined(emscripten):
+  proc discoverGamepads*() =
+    ## Ensures discovery is initialized. These backends detect new controllers
+    ## automatically; only Windows DirectInput requires an explicit rescan.
+    initGamepads()
+
 export common

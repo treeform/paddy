@@ -60,6 +60,15 @@ proc initGamepads*() =
 
   initialized = true
 
+proc discoverGamepads*() =
+  ## Finds newly connected DirectInput controllers. May block: call at a
+  ## user-selected time (e.g. a controller settings button), not every frame.
+  ## Initialization already performs the first scan. XInput remains automatic.
+  if not initialized:
+    initGamepads()
+  else:
+    discoverDirectInput()
+
 proc clearState(index: int) =
   ## Clears a Windows gamepad slot.
   gamepadResetState(gamepadStates[index])
@@ -157,7 +166,6 @@ proc pollGamepads*(): seq[Gamepad] =
       gamepadUpdateButtons(state[], buttons)
       result.add state[].toGamepad(i)
 
-  # Poll DirectInput devices (slots 4-7). Tell it whether an XInput pad
-  # is already connected so it can skip the expensive hot-plug scan.
-  let dinputGamepads = pollDirectInput(XUserMaxCount, result.len > 0)
+  # Poll known DirectInput devices (slots 4-7) without blocking discovery.
+  let dinputGamepads = pollDirectInput(XUserMaxCount)
   result.add dinputGamepads
