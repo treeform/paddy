@@ -21,6 +21,10 @@ else:
     ## Closes gamepad support on unsupported targets.
     discard
 
+  proc scanGamepads*() =
+    ## Discovers gamepads on unsupported targets without finding any.
+    discard
+
   proc pollGamepads*(): seq[Gamepad] =
     ## Returns an empty set of gamepads on unsupported targets.
     @[]

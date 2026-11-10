@@ -35,3 +35,24 @@ jobs:
 
       - run: nim check src/paddy.nim
       - run: nim r tests/tests.nim
+      - run: nim r tests/test_scan_native.nim
+      - run: nim r tests/test_scan_windows.nim
+      - run: nim r tests/test_scan_macos.nim
+      - run: nim r tests/test_scan_emscripten.nim
+      - run: nim r tests/test_scan_linux.nim
+        if: matrix.os == 'ubuntu-latest'
+      - run: nim r tests/test_scan_macos_native.nim
+        if: matrix.os == 'macos-latest'
+
+      - uses: mymindstorm/setup-emsdk@v14
+        if: matrix.os == 'ubuntu-latest'
+      - name: Test browser discovery
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          nim c tests/web/test_scan_browser.nim
+          google-chrome --headless --no-sandbox --disable-gpu \
+            --user-data-dir="$RUNNER_TEMP/paddy-browser" \
+            --virtual-time-budget=10000 --dump-dom \
+            "file://$PWD/tests/web/test_scan_browser.html" > "$RUNNER_TEMP/paddy-browser.html"
+          grep -q 'data-paddy-result="passed"' "$RUNNER_TEMP/paddy-browser.html"

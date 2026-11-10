@@ -10,6 +10,8 @@ type
   NSDictionary* = distinct NSObject
   NSApplication* = distinct NSObject
   NSString* = macos_objc.NSString
+  NSNotification* = distinct NSObject
+  NSNotificationCenter* = distinct NSObject
 
   GCController* = distinct NSObject
   GCPhysicalInputProfile* = distinct NSObject
@@ -24,6 +26,7 @@ type
     GCSystemGestureStateDisabled
 
 var
+  GCControllerDidDisconnectNotification* {.importc.}: NSString
   GCInputLeftShoulder* {.importc.}: NSString
   GCInputRightShoulder* {.importc.}: NSString
   GCInputLeftTrigger* {.importc.}: NSString
@@ -42,6 +45,13 @@ var
   GCInputRightThumbstickButton* {.importc.}: NSString
 
 objc:
+  proc retain*(self: NSObject): NSObject
+  proc release*(self: NSObject)
+  proc defaultCenter*(class: typedesc[NSNotificationCenter]): NSNotificationCenter
+  proc `object`*(self: NSNotification): ID
+  proc addObserver*(self: NSNotificationCenter, x: NSObject,
+    selector: SEL, name: NSString, object_mangle: ID)
+  proc removeObserver*(self: NSNotificationCenter, x: NSObject)
   proc sharedApplication*(class: typedesc[NSApplication]): NSApplication
   proc count*(self: NSArray): uint
   proc objectAtIndex*(self: NSArray, x: uint): ID

@@ -1,10 +1,9 @@
 import
-  std/[monotimes, os, posix, strutils, times],
+  std/[os, posix, strutils],
   ../[common, internal],
   linux_defs
 
 const
-  DiscoveryIntervalMs = 1000
   CapabilityWordBits = sizeof(culong) * 8
 
 var
@@ -15,7 +14,6 @@ var
   udevMonitorFd: cint
   devices: array[MaxGamepads, ptr libevdev]
   devicePaths: array[MaxGamepads, string]
-  lastDiscovery: MonoTime
   deviceAbsInfo: array[MaxGamepads, array[8, ptr input_absinfo]]
   gamepadStates: array[MaxGamepads, GamepadState]
   defaultAbsInfo =
@@ -114,15 +112,42 @@ proc handleDeviceEvent(devnode, syspath: string, added: bool,
       gamepadResetState(gamepadStates[i])
       break
 
+proc processDeviceNotifications() =
+  ## Removes disconnected devices without admitting newly connected devices.
+  while true:
+    let device = udev_monitor_receive_device(udevMonitor)
+    if device == nil:
+      break
+    let action = udev_device_get_action(device)
+    if action != nil and action == "remove":
+      handleDeviceEvent(device, false)
+    discard udev_device_unref(device)
+
 proc discoverDevices() =
   ## Rescan input devices, including controllers without udev metadata.
+  processDeviceNotifications()
   for path in devicePaths:
     if path.len > 0 and not dirExists(path):
       handleDeviceEvent("", path, false)
+
+  let enumerate = udev_enumerate_new(udevCtx)
+  discard udev_enumerate_add_match_subsystem(enumerate, "input")
+  discard udev_enumerate_add_match_property(enumerate, "ID_INPUT_JOYSTICK", "1")
+  discard udev_enumerate_scan_devices(enumerate)
+  var entry: ptr udev_list_entry
+  udev_list_entry_foreach(udev_enumerate_get_list_entry(enumerate)):
+    let device = udev_device_new_from_syspath(udevCtx, udev_list_entry_get_name(entry))
+    if device != nil:
+      handleDeviceEvent(device, true)
+      discard udev_device_unref(device)
+  discard udev_enumerate_unref(enumerate)
+
   for path in walkDirs("/sys/class/input/event*"):
     var syspath: string
     try:
       syspath = expandFilename(path)
+      if syspath in devicePaths:
+        continue
       # Opening and closing non-controllers can stall on kernel input cleanup.
       let keys = readFile(path / "device/capabilities/key").splitWhitespace()
       var controller = false
@@ -139,10 +164,9 @@ proc discoverDevices() =
       raise
     handleDeviceEvent("/dev/input/" & path.extractFilename(), syspath,
       true, checkCapabilities = true)
-  lastDiscovery = getMonoTime()
 
 proc initGamepads*() =
-  ## Initializes Linux gamepad support.
+  ## Initializes gamepad support and performs a potentially blocking startup scan.
   if initialized:
     return
 
@@ -186,25 +210,15 @@ proc initGamepads*() =
   ) < 0:
     raiseLinuxError("Error adding monitor to epoll")
 
-  let enumerate = udev_enumerate_new(udevCtx)
-  discard udev_enumerate_add_match_subsystem(enumerate, "input")
-  discard udev_enumerate_add_match_property(
-    enumerate,
-    "ID_INPUT_JOYSTICK",
-    "1"
-  )
-  discard udev_enumerate_scan_devices(enumerate)
-
-  var entry: ptr udev_list_entry
-  udev_list_entry_foreach(udev_enumerate_get_list_entry(enumerate)):
-    let name = udev_list_entry_get_name(entry)
-    let device = udev_device_new_from_syspath(udevCtx, name)
-    handleDeviceEvent(device, true)
-    discard udev_device_unref(device)
-
-  discard udev_enumerate_unref(enumerate)
   discoverDevices()
   initialized = true
+
+proc scanGamepads*() =
+  ## Discovers available controllers without resetting existing input; may block.
+  if not initialized:
+    initGamepads()
+  else:
+    discoverDevices()
 
 proc closeGamepads*() =
   ## Closes Linux gamepad support and releases resources.
@@ -238,12 +252,10 @@ proc closeGamepads*() =
   initialized = false
 
 proc pollGamepads*(): seq[Gamepad] =
-  ## Polls Linux gamepads and returns connected snapshots.
+  ## Reads known controllers and removes disconnected ones without discovery.
+  ## The first call initializes and scans if initGamepads was not called.
   if not initialized:
     initGamepads()
-
-  if (getMonoTime() - lastDiscovery).inMilliseconds >= DiscoveryIntervalMs:
-    discoverDevices()
 
   for i in 0 ..< MaxGamepads:
     let state = addr gamepadStates[i]
@@ -267,15 +279,7 @@ proc pollGamepads*(): seq[Gamepad] =
 
     let index = events[i].data.u32
     if index == 0xFFFFFFFF'u32:
-      let device = udev_monitor_receive_device(udevMonitor)
-      let action = udev_device_get_action(device)
-      if action != nil and
-        udev_device_get_property_value(device, "ID_INPUT_JOYSTICK") == "1":
-          if action == "add":
-            handleDeviceEvent(device, true)
-          elif action == "remove":
-            handleDeviceEvent(device, false)
-      discard udev_device_unref(device)
+      processDeviceNotifications()
       continue
 
     let device = devices[index]

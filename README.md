@@ -70,7 +70,7 @@ Paddy uses the native or standard controller API for each target platform.
 
 | Platform | Backend | Notes |
 | --- | --- | --- |
-| Windows | `XInput` | Standard Xbox-style controller API on Windows. |
+| Windows | `XInput` + `DirectInput` | Xbox-style controllers plus a DirectInput fallback. |
 | macOS | `GameController.framework` / `GCController` | Native Apple gamepad/controller support. |
 | Linux | `udev` + `evdev` | Native Linux device enumeration and input polling. |
 | Emscripten / Web | HTML5 Gamepad API | Browser-provided gamepad support. |
@@ -103,6 +103,7 @@ The intended model is:
 1. Initialize the gamepad system.
 2. Once per frame, poll/update the gamepad system.
 3. Read buttons, sticks, triggers, and metadata from the connected devices.
+4. Explicitly scan when the application wants to discover newly connected controllers.
 
 This fits naturally into a normal game loop.
 
@@ -119,6 +120,8 @@ initGamepads()
 
 while not window.closeRequested:
   pollEvents()
+  if window.buttonPressed[KeyF5]:
+    scanGamepads()
   for gamepad in pollGamepads():
     echo gamepad.name
 
@@ -133,9 +136,42 @@ while not window.closeRequested:
     discard lx
     discard ly
     discard rt
+
+closeGamepads()
 ```
 
 The main idea is that gamepads are polled, not event-driven. Each frame, you update the controller state and then query the returned gamepad objects.
+
+### Discovery and hot-plugging
+
+The same discovery contract applies to Windows, Linux, macOS, and browsers:
+
+| Function | Behavior |
+| --- | --- |
+| `initGamepads()` | Initialize and discover currently available controllers. Repeated calls do nothing. |
+| `scanGamepads()` | Discover newly available controllers, preserving existing controller IDs and input state. |
+| `pollGamepads()` | Read registered controllers and remove disconnected controllers, returning their input snapshots. |
+| `closeGamepads()` | Release controller resources. |
+
+Initialization and scanning may block. Call them at startup, on a controller
+setup screen, or in response to an explicit rescan action. A menu can still
+pause briefly during a scan; the application controls when that cost occurs.
+Calling `scanGamepads()` before initialization initializes and scans once.
+For compatibility, the first `pollGamepads()` call also initializes and scans
+if needed. Subsequent polls never enumerate devices, probe disconnected
+XInput slots, or open new controllers.
+
+**Hot-plug migration:** applications that previously relied on automatic
+discovery during polling must call `scanGamepads()` themselves. This includes
+reconnecting an unplugged controller and adding another controller while one
+is already connected. Disconnections still clear controller input during
+normal polling. OS connection notifications do not bypass explicit discovery.
+
+Linux discovery uses udev labels and a capability-filtered sysfs fallback for
+mdev systems and unlabelled controllers. Input polling does not periodically
+rescan sysfs or open unrelated input nodes. Browsers can require a controller
+button press before exposing a device to a scan; scanning does not pair devices
+or bypass the OS or browser's visibility restrictions.
 
 ## Common Data You Can Read
 
