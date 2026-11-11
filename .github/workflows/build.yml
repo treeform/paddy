@@ -35,3 +35,5 @@ jobs:
 
       - run: nim check src/paddy.nim
       - run: nim r tests/tests.nim
+      - run: nim r tests/test_windows_discovery.nim
+        if: matrix.os == 'windows-latest'

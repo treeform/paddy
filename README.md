@@ -70,12 +70,28 @@ Paddy uses the native or standard controller API for each target platform.
 
 | Platform | Backend | Notes |
 | --- | --- | --- |
-| Windows | `XInput` | Standard Xbox-style controller API on Windows. |
+| Windows | `XInput` + `DirectInput` | Xbox-style controllers and other HID game controllers. |
 | macOS | `GameController.framework` / `GCController` | Native Apple gamepad/controller support. |
 | Linux | `udev` + `evdev` | Native Linux device enumeration and input polling. |
 | Emscripten / Web | HTML5 Gamepad API | Browser-provided gamepad support. |
 
 The exact support level and packaging details may vary by platform, but the public Nim API should stay consistent.
+
+### Controller discovery
+
+Call `initGamepads()` during startup; it discovers controllers already attached.
+Call `pollGamepads()` once per frame for input and disconnection handling.
+For a newly attached or reconnected Windows DirectInput controller, call
+`discoverGamepads()` from a **Find controllers** button or another suitable menu
+action. The basic example uses F5. Discovery is synchronous and may block for
+tens or hundreds of milliseconds, so do not call it periodically during gameplay.
+It preserves existing controller slots and calibration, and can also initialize
+the backend if called before `initGamepads()`.
+
+XInput, macOS, Linux, and browser controllers retain automatic discovery.
+`discoverGamepads()` is available on all platforms; on those automatic backends
+it only ensures initialization. As with polling, call discovery on the thread
+that initialized Paddy.
 
 ## Requirements
 
