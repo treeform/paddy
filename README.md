@@ -79,19 +79,14 @@ The exact support level and packaging details may vary by platform, but the publ
 
 ### Controller discovery
 
-Call `initGamepads()` during startup; it discovers controllers already attached.
-Call `pollGamepads()` once per frame for input and disconnection handling.
-For a newly attached or reconnected Windows DirectInput controller, call
-`discoverGamepads()` from a **Find controllers** button or another suitable menu
-action. The basic example uses F5. Discovery is synchronous and may block for
-tens or hundreds of milliseconds, so do not call it periodically during gameplay.
-It preserves existing controller slots and calibration, and can also initialize
-the backend if called before `initGamepads()`.
+Call `initGamepads()` during startup and `pollGamepads()` once per frame for input.
+Call `scanGamepads()` from a **Find controllers** button or another suitable menu
+action. `discoverGamepads()` remains available for existing applications.
 
-XInput, macOS, Linux, and browser controllers retain automatic discovery.
-`discoverGamepads()` is available on all platforms; on those automatic backends
-it only ensures initialization. As with polling, call discovery on the thread
-that initialized Paddy.
+Discovery is synchronous and can block for tens or hundreds of milliseconds.
+Keep discovery requests out of the frame loop and use the thread that initialized
+Paddy. Backends without a separate scan implementation use their existing
+discovery API, so their automatic hotplug behavior is unchanged.
 
 ## Requirements
 
