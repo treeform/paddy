@@ -291,8 +291,8 @@ proc enumDevicesCallback(
 
   return DIENUM_CONTINUE
 
-proc scanDirectInput*() =
-  ## Registers attached DirectInput controllers; enumeration may block.
+proc discoverDirectInput*() =
+  ## Enumerates attached DirectInput game controllers.
   if directInput == nil:
     return
 
@@ -362,6 +362,9 @@ proc initDirectInput*() =
 
   dinputLoaded = true
   dinputInitialized = true
+
+  # Do initial enumeration
+  discoverDirectInput()
 
 proc closeDirectInput*() =
   ## Closes DirectInput and releases all resources.

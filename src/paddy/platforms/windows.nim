@@ -8,7 +8,6 @@ var
   initialized: bool
   xinputLoaded: bool
   xinputLib: LibHandle
-  xinputConnected: array[XUserMaxCount, bool]
   xinputGetState: proc(
     dwUserIndex: DWORD,
     pState: ptr XInputState
@@ -41,26 +40,8 @@ proc normalizeTrigger(value: BYTE): float32 =
   (value.float32 - XInputGamepadTriggerThreshold.float32) /
     (255.0'f - XInputGamepadTriggerThreshold.float32)
 
-proc clearState(index: int) =
-  ## Clears a Windows gamepad slot.
-  xinputConnected[index] = false
-  gamepadResetState(gamepadStates[index])
-  gamepadStates[index].name = ""
-
-proc discoverDevices() =
-  ## Probes XInput slots and enumerates DirectInput controllers; may block.
-  if xinputLoaded:
-    for i in 0 ..< XUserMaxCount:
-      var state: XInputState
-      let status = xinputGetState(i.DWORD, addr state)
-      if status == ErrorSuccess:
-        xinputConnected[i] = true
-      elif status == ErrorDeviceNotConnected:
-        clearState(i)
-  scanDirectInput()
-
 proc initGamepads*() =
-  ## Initializes gamepad support and performs a potentially blocking startup scan.
+  ## Initializes Windows gamepad support through XInput and DirectInput.
   if initialized:
     return
 
@@ -78,14 +59,20 @@ proc initGamepads*() =
   initDirectInput()
 
   initialized = true
-  discoverDevices()
 
-proc scanGamepads*() =
-  ## Discovers available controllers without resetting existing input; may block.
+proc discoverGamepads*() =
+  ## Finds newly connected DirectInput controllers. May block: call at a
+  ## user-selected time (e.g. a controller settings button), not every frame.
+  ## Initialization already performs the first scan. XInput remains automatic.
   if not initialized:
     initGamepads()
   else:
-    discoverDevices()
+    discoverDirectInput()
+
+proc clearState(index: int) =
+  ## Clears a Windows gamepad slot.
+  gamepadResetState(gamepadStates[index])
+  gamepadStates[index].name = ""
 
 proc closeGamepads*() =
   ## Closes Windows gamepad support and releases resources.
@@ -107,8 +94,7 @@ proc closeGamepads*() =
   initialized = false
 
 proc pollGamepads*(): seq[Gamepad] =
-  ## Reads known controllers and removes disconnected ones without discovery.
-  ## The first call initializes and scans if initGamepads was not called.
+  ## Polls Windows gamepads and returns connected snapshots.
   ## XInput controllers appear first (slots 0-3), followed by
   ## DirectInput controllers (slots 4-7).
   if not initialized:
@@ -117,8 +103,6 @@ proc pollGamepads*(): seq[Gamepad] =
   # Poll XInput devices (slots 0-3)
   if xinputLoaded:
     for i in 0 ..< XUserMaxCount:
-      if not xinputConnected[i]:
-        continue
       var xinputState: XInputState
       let status = xinputGetState(i.DWORD, addr xinputState)
 
@@ -182,6 +166,6 @@ proc pollGamepads*(): seq[Gamepad] =
       gamepadUpdateButtons(state[], buttons)
       result.add state[].toGamepad(i)
 
-  # Poll registered DirectInput devices (slots 4-7).
+  # Poll known DirectInput devices (slots 4-7) without blocking discovery.
   let dinputGamepads = pollDirectInput(XUserMaxCount)
   result.add dinputGamepads

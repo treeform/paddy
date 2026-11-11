@@ -21,12 +21,23 @@ else:
     ## Closes gamepad support on unsupported targets.
     discard
 
-  proc scanGamepads*() =
-    ## Discovers gamepads on unsupported targets without finding any.
-    discard
-
   proc pollGamepads*(): seq[Gamepad] =
     ## Returns an empty set of gamepads on unsupported targets.
     @[]
+
+when not declared(discoverGamepads):
+  when declared(scanGamepads):
+    proc discoverGamepads*() =
+      ## Discovers available controllers at an application-selected time; may block.
+      scanGamepads()
+  else:
+    proc discoverGamepads*() =
+      ## Initializes backends that still discover controllers automatically.
+      initGamepads()
+
+when not declared(scanGamepads):
+  proc scanGamepads*() =
+    ## Requests discovery through the backend's existing API; may block.
+    discoverGamepads()
 
 export common

@@ -12,7 +12,7 @@ proc testLifecycle() =
         doAssert pad.id in 0 ..< MaxGamepads
         doAssert pad.id notin seen
         seen.incl pad.id
-    scanGamepads()
+    discoverGamepads()
     closeGamepads()
     closeGamepads()
   discard pollGamepads()
