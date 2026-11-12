@@ -100,12 +100,15 @@
   <dl class="item">
     <div id="discoverGamepads-procs-all">
   <div id="discoverGamepads">
-  <dt><pre><span class="Keyword">proc</span> <a href="#discoverGamepads"><span class="Identifier">discoverGamepads</span></a><span class="Other">(</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#discoverGamepads"><span class="Identifier">discoverGamepads</span></a><span class="Other">(</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span>
+                                   <span class="Identifier">OSError</span><span class="Other">]</span><span class="Other">,</span>
+                          <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span><span class="Other">,</span>
+                          <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Ensures discovery is initialized. These backends detect new controllers automatically; only Windows DirectInput requires an explicit rescan.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy.nim#L29" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy.nim#L29" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    Discovers available controllers at an application-selected time; may block.
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy.nim#L30" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy.nim#L30" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -117,7 +120,7 @@
 <div class="section" id="19">
   <h1><a class="toc-backref" href="#19">Exports</a></h1>
   <dl class="item">
-    <a href="paddy/platforms/linux.html#closeGamepads"><span class="Identifier">closeGamepads</span></a>, <a href="paddy/platforms/linux.html#initGamepads"><span class="Identifier">initGamepads</span></a>, <a href="paddy/platforms/linux.html#pollGamepads"><span class="Identifier">pollGamepads</span></a>, <a href="paddy/common.html#Gamepad"><span class="Identifier">Gamepad</span></a>, <a href="paddy/common.html#GamepadAxis"><span class="Identifier">GamepadAxis</span></a>, <a href="paddy/common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a>, <a href="paddy/common.html#MaxGamepads"><span class="Identifier">MaxGamepads</span></a>, <a href="paddy/common.html#PaddyError"><span class="Identifier">PaddyError</span></a>, <a href="paddy/common.html#axis,Gamepad,GamepadAxis"><span class="Identifier">axis</span></a>, <a href="paddy/common.html#button,Gamepad,GamepadButton"><span class="Identifier">button</span></a>, <a href="paddy/common.html#buttonPressed,Gamepad,GamepadButton"><span class="Identifier">buttonPressed</span></a>, <a href="paddy/common.html#buttonPressure,Gamepad,GamepadButton"><span class="Identifier">buttonPressure</span></a>, <a href="paddy/common.html#buttonReleased,Gamepad,GamepadButton"><span class="Identifier">buttonReleased</span></a>
+    <a href="paddy/platforms/linux.html#closeGamepads"><span class="Identifier">closeGamepads</span></a>, <a href="paddy/platforms/linux.html#initGamepads"><span class="Identifier">initGamepads</span></a>, <a href="paddy/platforms/linux.html#pollGamepads"><span class="Identifier">pollGamepads</span></a>, <a href="paddy/platforms/linux.html#scanGamepads"><span class="Identifier">scanGamepads</span></a>, <a href="paddy/common.html#Gamepad"><span class="Identifier">Gamepad</span></a>, <a href="paddy/common.html#GamepadAxis"><span class="Identifier">GamepadAxis</span></a>, <a href="paddy/common.html#GamepadButton"><span class="Identifier">GamepadButton</span></a>, <a href="paddy/common.html#MaxGamepads"><span class="Identifier">MaxGamepads</span></a>, <a href="paddy/common.html#PaddyError"><span class="Identifier">PaddyError</span></a>, <a href="paddy/common.html#axis,Gamepad,GamepadAxis"><span class="Identifier">axis</span></a>, <a href="paddy/common.html#button,Gamepad,GamepadButton"><span class="Identifier">button</span></a>, <a href="paddy/common.html#buttonPressed,Gamepad,GamepadButton"><span class="Identifier">buttonPressed</span></a>, <a href="paddy/common.html#buttonPressure,Gamepad,GamepadButton"><span class="Identifier">buttonPressure</span></a>, <a href="paddy/common.html#buttonReleased,Gamepad,GamepadButton"><span class="Identifier">buttonReleased</span></a>
   </dl>
 </div>
 
@@ -127,7 +130,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2026-11-11 19:31:26 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2026-11-12 20:56:31 UTC</small>
       </div>
     </div>
   </div>

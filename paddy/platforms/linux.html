@@ -79,6 +79,10 @@
   <li><a class="reference" href="#pollGamepads" title="pollGamepads(): seq[Gamepad]">pollGamepads(): seq[Gamepad]</a></li>
 
 </ul>
+<ul class="simple nested-toc-section">scanGamepads
+  <li><a class="reference" href="#scanGamepads" title="scanGamepads()">scanGamepads()</a></li>
+
+</ul>
 
     </ul>
   </details>
@@ -109,8 +113,8 @@
   <dd>
     
     Closes Linux gamepad support and releases resources.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L159" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L159" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L223" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L223" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -118,12 +122,15 @@
 </div>
 <div id="initGamepads-procs-all">
   <div id="initGamepads">
-  <dt><pre><span class="Keyword">proc</span> <a href="#initGamepads"><span class="Identifier">initGamepads</span></a><span class="Other">(</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#initGamepads"><span class="Identifier">initGamepads</span></a><span class="Other">(</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span>
+                               <span class="Identifier">OSError</span><span class="Other">]</span><span class="Other">,</span>
+                      <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span><span class="Other">,</span>
+                      <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Initializes Linux gamepad support.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L95" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L95" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    Initializes gamepad support and performs a potentially blocking startup scan.
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L168" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L168" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -131,12 +138,30 @@
 </div>
 <div id="pollGamepads-procs-all">
   <div id="pollGamepads">
-  <dt><pre><span class="Keyword">proc</span> <a href="#pollGamepads"><span class="Identifier">pollGamepads</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="../common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#pollGamepads"><span class="Identifier">pollGamepads</span></a><span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="../common.html#Gamepad"><span class="Identifier">Gamepad</span></a><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span>
+    <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span><span class="Other">,</span>
+                                    <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
-    Polls Linux gamepads and returns connected snapshots.
-    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L190" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
-<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L190" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+    Reads known controllers and removes disconnected ones without discovery. The first call initializes and scans if initGamepads was not called.
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L254" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L254" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
+
+  </dd>
+</div>
+
+</div>
+<div id="scanGamepads-procs-all">
+  <div id="scanGamepads">
+  <dt><pre><span class="Keyword">proc</span> <a href="#scanGamepads"><span class="Identifier">scanGamepads</span></a><span class="Other">(</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">PaddyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span>
+                               <span class="Identifier">OSError</span><span class="Other">]</span><span class="Other">,</span>
+                      <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span><span class="Other">,</span>
+                      <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dd>
+    
+    Discovers available controllers without resetting existing input; may block.
+    <a href="https://github.com/treeform/paddy/tree/master/src/paddy/platforms/linux.nim#L216" class="link-seesrc" target="_blank">Source</a>&nbsp;&nbsp;
+<a href="https://github.com/treeform/paddy/edit/devel/src/paddy/platforms/linux.nim#L216" class="link-seesrc" target="_blank" >Edit</a>&nbsp;&nbsp;
 
   </dd>
 </div>
@@ -152,7 +177,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2026-11-11 19:31:26 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2026-11-12 20:56:31 UTC</small>
       </div>
     </div>
   </div>

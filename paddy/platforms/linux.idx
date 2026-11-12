@@ -1,4 +1,5 @@
 nimTitle	linux	paddy/platforms/linux.html	module src/paddy/platforms/linux		0
-nim	initGamepads	paddy/platforms/linux.html#initGamepads	proc initGamepads()		95
-nim	closeGamepads	paddy/platforms/linux.html#closeGamepads	proc closeGamepads()		159
-nim	pollGamepads	paddy/platforms/linux.html#pollGamepads	proc pollGamepads(): seq[Gamepad]		190
+nim	initGamepads	paddy/platforms/linux.html#initGamepads	proc initGamepads()		168
+nim	scanGamepads	paddy/platforms/linux.html#scanGamepads	proc scanGamepads()		216
+nim	closeGamepads	paddy/platforms/linux.html#closeGamepads	proc closeGamepads()		223
+nim	pollGamepads	paddy/platforms/linux.html#pollGamepads	proc pollGamepads(): seq[Gamepad]		254
