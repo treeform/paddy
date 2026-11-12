@@ -1,7 +1,10 @@
 import
-  std/[os, posix],
+  std/[os, posix, strutils],
   ../[common, internal],
   linux_defs
+
+const
+  CapabilityWordBits = sizeof(culong) * 8
 
 var
   initialized: bool
@@ -10,7 +13,7 @@ var
   udevMonitor: ptr udev_monitor
   udevMonitorFd: cint
   devices: array[MaxGamepads, ptr libevdev]
-  devicePaths: array[MaxGamepads, cstring]
+  devicePaths: array[MaxGamepads, string]
   deviceAbsInfo: array[MaxGamepads, array[8, ptr input_absinfo]]
   gamepadStates: array[MaxGamepads, GamepadState]
   defaultAbsInfo =
@@ -30,7 +33,11 @@ proc resetAbsInfo(gamepadId: int) =
 
 proc strncmp(a: cstring, b: cstring, n: cint): cint {.importc, header: "<string.h>".}
 
-proc handleDeviceEvent(device: ptr udev_device, added: bool) =
+proc handleDeviceEvent(devnode, syspath: string, added: bool,
+  checkCapabilities = false)
+
+proc handleDeviceEvent(device: ptr udev_device, added: bool,
+  checkCapabilities = false) =
   ## Registers or unregisters a Linux gamepad device.
   let devnode = udev_device_get_devnode(device)
   if devnode == nil or strncmp(devnode, "/dev/input/event", 16) != 0:
@@ -39,13 +46,19 @@ proc handleDeviceEvent(device: ptr udev_device, added: bool) =
   let syspath = udev_device_get_syspath(device)
   if syspath == nil:
     return
+  handleDeviceEvent($devnode, $syspath, added, checkCapabilities)
 
+proc handleDeviceEvent(devnode, syspath: string, added: bool,
+  checkCapabilities = false) =
+  ## Share device registration between udev events and mdev discovery.
   if added:
+    if syspath in devicePaths:
+      return
     for i in 0 ..< MaxGamepads:
       if devices[i] != nil:
         continue
 
-      let fd = open(devnode, O_RDONLY or O_NONBLOCK)
+      let fd = open(devnode.cstring, O_RDONLY or O_NONBLOCK)
       if fd < 0:
         return
 
@@ -53,6 +66,13 @@ proc handleDeviceEvent(device: ptr udev_device, added: bool) =
       if libevdev_new_from_fd(fd, addr inputDevice) != 0:
         discard close(fd)
         return
+
+      if checkCapabilities:
+        if not libevdev_has_event_code(inputDevice, EV_KEY, BTN_A) and
+            not libevdev_has_event_code(inputDevice, EV_KEY, BTN_TRIGGER):
+          libevdev_free(inputDevice)
+          discard close(fd)
+          return
 
       var event = epoll_event(
         events: EPOLLIN,
@@ -88,12 +108,65 @@ proc handleDeviceEvent(device: ptr udev_device, added: bool) =
       discard close(fd)
 
       devices[i] = nil
-      devicePaths[i] = nil
+      devicePaths[i] = ""
       gamepadResetState(gamepadStates[i])
       break
 
+proc processDeviceNotifications() =
+  ## Removes disconnected devices without admitting newly connected devices.
+  while true:
+    let device = udev_monitor_receive_device(udevMonitor)
+    if device == nil:
+      break
+    let action = udev_device_get_action(device)
+    if action != nil and action == "remove":
+      handleDeviceEvent(device, false)
+    discard udev_device_unref(device)
+
+proc discoverDevices() =
+  ## Rescan input devices, including controllers without udev metadata.
+  processDeviceNotifications()
+  for path in devicePaths:
+    if path.len > 0 and not dirExists(path):
+      handleDeviceEvent("", path, false)
+
+  let enumerate = udev_enumerate_new(udevCtx)
+  discard udev_enumerate_add_match_subsystem(enumerate, "input")
+  discard udev_enumerate_add_match_property(enumerate, "ID_INPUT_JOYSTICK", "1")
+  discard udev_enumerate_scan_devices(enumerate)
+  var entry: ptr udev_list_entry
+  udev_list_entry_foreach(udev_enumerate_get_list_entry(enumerate)):
+    let device = udev_device_new_from_syspath(udevCtx, udev_list_entry_get_name(entry))
+    if device != nil:
+      handleDeviceEvent(device, true)
+      discard udev_device_unref(device)
+  discard udev_enumerate_unref(enumerate)
+
+  for path in walkDirs("/sys/class/input/event*"):
+    var syspath: string
+    try:
+      syspath = expandFilename(path)
+      if syspath in devicePaths:
+        continue
+      # Opening and closing non-controllers can stall on kernel input cleanup.
+      let keys = readFile(path / "device/capabilities/key").splitWhitespace()
+      var controller = false
+      for button in [BTN_A, BTN_TRIGGER]:
+        let word = keys.high - button div CapabilityWordBits
+        if word >= 0 and (parseHexInt(keys[word]).uint and
+            (1'u shl (button mod CapabilityWordBits))) != 0:
+          controller = true
+      if not controller:
+        continue
+    except OSError as error:
+      if error.errorCode == ENOENT:
+        continue
+      raise
+    handleDeviceEvent("/dev/input/" & path.extractFilename(), syspath,
+      true, checkCapabilities = true)
+
 proc initGamepads*() =
-  ## Initializes Linux gamepad support.
+  ## Initializes gamepad support and performs a potentially blocking startup scan.
   if initialized:
     return
 
@@ -137,24 +210,15 @@ proc initGamepads*() =
   ) < 0:
     raiseLinuxError("Error adding monitor to epoll")
 
-  let enumerate = udev_enumerate_new(udevCtx)
-  discard udev_enumerate_add_match_subsystem(enumerate, "input")
-  discard udev_enumerate_add_match_property(
-    enumerate,
-    "ID_INPUT_JOYSTICK",
-    "1"
-  )
-  discard udev_enumerate_scan_devices(enumerate)
-
-  var entry: ptr udev_list_entry
-  udev_list_entry_foreach(udev_enumerate_get_list_entry(enumerate)):
-    let name = udev_list_entry_get_name(entry)
-    let device = udev_device_new_from_syspath(udevCtx, name)
-    handleDeviceEvent(device, true)
-    discard udev_device_unref(device)
-
-  discard udev_enumerate_unref(enumerate)
+  discoverDevices()
   initialized = true
+
+proc scanGamepads*() =
+  ## Discovers available controllers without resetting existing input; may block.
+  if not initialized:
+    initGamepads()
+  else:
+    discoverDevices()
 
 proc closeGamepads*() =
   ## Closes Linux gamepad support and releases resources.
@@ -169,7 +233,7 @@ proc closeGamepads*() =
     libevdev_free(devices[i])
     discard close(fd)
     devices[i] = nil
-    devicePaths[i] = nil
+    devicePaths[i] = ""
     gamepadResetState(gamepadStates[i])
     resetAbsInfo(i)
 
@@ -188,7 +252,8 @@ proc closeGamepads*() =
   initialized = false
 
 proc pollGamepads*(): seq[Gamepad] =
-  ## Polls Linux gamepads and returns connected snapshots.
+  ## Reads known controllers and removes disconnected ones without discovery.
+  ## The first call initializes and scans if initGamepads was not called.
   if not initialized:
     initGamepads()
 
@@ -204,20 +269,17 @@ proc pollGamepads*(): seq[Gamepad] =
   let eventCount = epoll_wait(epollFd, addr events[0], maxEvents, 0)
 
   for i in 0 ..< eventCount:
+    if (events[i].events and EPOLLHUP) != 0:
+      let index = events[i].data.u32
+      if index < MaxGamepads and devices[index] != nil:
+        handleDeviceEvent("", devicePaths[index], false)
+      continue
     if (events[i].events and EPOLLIN) == 0:
       continue
 
     let index = events[i].data.u32
     if index == 0xFFFFFFFF'u32:
-      let device = udev_monitor_receive_device(udevMonitor)
-      let action = udev_device_get_action(device)
-      if action != nil and
-        udev_device_get_property_value(device, "ID_INPUT_JOYSTICK") == "1":
-          if action == "add":
-            handleDeviceEvent(device, true)
-          elif action == "remove":
-            handleDeviceEvent(device, false)
-      discard udev_device_unref(device)
+      processDeviceNotifications()
       continue
 
     let device = devices[index]
@@ -238,6 +300,9 @@ proc pollGamepads*(): seq[Gamepad] =
 
     while true:
       let rc = libevdev_next_event(device, readFlag, addr inputEvent)
+      if rc == -ENODEV:
+        handleDeviceEvent("", devicePaths[index], false)
+        break
       if rc == LIBEVDEV_READ_STATUS_SYNC:
         readFlag = LIBEVDEV_READ_FLAG_SYNC
       elif rc == -EAGAIN:
@@ -380,7 +445,8 @@ proc pollGamepads*(): seq[Gamepad] =
       else:
         discard
 
-    gamepadUpdateButtons(state[], buttons)
+    if devices[index] != nil:
+      gamepadUpdateButtons(state[], buttons)
 
   for i in 0 ..< MaxGamepads:
     if devices[i] != nil:

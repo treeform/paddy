@@ -3,6 +3,7 @@ import windy, paddy
 let window = newWindow("Paddy Basic", ivec2(1280, 720))
 
 initGamepads()
+window.title = "Paddy Basic - F5: check for controllers"
 
 proc sampleGamepad(gamepad: paddy.Gamepad) =
   ## Prints the full controller state in a simple text form.
@@ -23,10 +24,10 @@ proc sampleGamepad(gamepad: paddy.Gamepad) =
       echo gamepad.name, " axis ", axis, ": ", value
 
 while not window.closeRequested:
-  # Explicit discovery may block. Run only when the player requests a scan.
+  pollEvents()
   if window.buttonPressed[KeyF5]:
-    discoverGamepads()
+    scanGamepads()
   for gamepad in pollGamepads():
     sampleGamepad(gamepad)
 
-  pollEvents()
+closeGamepads()

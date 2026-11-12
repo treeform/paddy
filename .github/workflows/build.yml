@@ -33,7 +33,10 @@ jobs:
           cd ..
           nimby install paddy/paddy.nimble
 
+      - run: nim r tests/test_scan_linux.nim
+        if: matrix.os == 'ubuntu-latest'
       - run: nim check src/paddy.nim
       - run: nim r tests/tests.nim
+      - run: nim r tests/test_scan_native.nim
       - run: nim r tests/test_windows_discovery.nim
         if: matrix.os == 'windows-latest'

@@ -41,6 +41,7 @@ const
   EPOLL_CTL_ADD* = 1
   EPOLL_CTL_DEL* = 2
   EPOLLIN* = 0x001
+  EPOLLHUP* = 0x010
 
   EV_KEY* = 1
   EV_ABS* = 3
