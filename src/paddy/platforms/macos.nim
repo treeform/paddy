@@ -9,6 +9,10 @@ type
 
 var
   initialized: bool
+  disconnectObserverClass: Class
+  disconnectObserver: NSObject
+  disconnected: array[MaxGamepads, bool]
+  gamepadControllers: array[MaxGamepads, GCController]
   gamepadProfiles: array[MaxGamepads, GCPhysicalInputProfile]
   gamepadMeta: array[MaxGamepads, GamepadProfile]
   gamepadStates: array[MaxGamepads, GamepadState]
@@ -32,10 +36,27 @@ var
 
 proc clearSlot(index: int) =
   ## Clears a macOS gamepad slot.
+  if gamepadControllers[index].int != 0:
+    gamepadControllers[index].NSObject.release()
+  gamepadControllers[index] = 0.GCController
   gamepadProfiles[index] = 0.GCPhysicalInputProfile
   gamepadTimestamps[index] = 0.0
   gamepadMeta[index] = GamepadProfile()
+  disconnected[index] = false
   gamepadResetState(gamepadStates[index])
+
+proc controllerDisconnected(self: ID, cmd: SEL, notification: NSNotification) {.cdecl.} =
+  ## Marks known controllers for removal when input is next polled or scanned.
+  let controller = notification.object().GCController
+  for i in 0 ..< MaxGamepads:
+    if gamepadControllers[i].int == controller.int:
+      disconnected[i] = true
+
+proc removeDisconnected() =
+  ## Clears notified slots before their cached inputs are accessed.
+  for i in 0 ..< MaxGamepads:
+    if disconnected[i]:
+      clearSlot(i)
 
 proc assignController(slot: int, controller: GCController) =
   ## Assigns a controller profile to a slot and caches its inputs.
@@ -118,6 +139,7 @@ proc assignController(slot: int, controller: GCController) =
   )
 
   let vendorName = controller.vendorName()
+  gamepadControllers[slot] = controller.NSObject.retain().GCController
   gamepadProfiles[slot] = profile
   gamepadMeta[slot].numButtons = numButtons.int8
   gamepadMeta[slot].numAxes = numAxes.int8
@@ -129,16 +151,16 @@ proc assignController(slot: int, controller: GCController) =
 
 proc syncControllers() =
   ## Synchronizes the slot table with currently available controllers.
+  removeDisconnected()
   var seen: array[MaxGamepads, bool]
   let controllers = GCController.controllers()
 
   for i in 0 ..< controllers.count.int:
     let controller = controllers[i].GCController
-    let profile = controller.physicalInputProfile()
     var slot = -1
 
     for j in 0 ..< MaxGamepads:
-      if gamepadProfiles[j].int == profile.int:
+      if gamepadControllers[j].int == controller.int:
         slot = j
         break
 
@@ -157,7 +179,7 @@ proc syncControllers() =
       clearSlot(i)
 
 proc initGamepads*() =
-  ## Initializes macOS gamepad support.
+  ## Initializes gamepad support and performs a potentially blocking startup scan.
   if initialized:
     return
 
@@ -165,27 +187,58 @@ proc initGamepads*() =
     discard NSApplication.sharedApplication()
     GCController.setShouldMonitorBackgroundEvents(true)
     GCController.startWirelessControllerDiscoveryWithCompletionHandler(0.ID)
+    if disconnectObserverClass.int == 0:
+      disconnectObserverClass = objc_allocateClassPair(
+        NSObject.getClass(), "PaddyDisconnectObserver"
+      )
+      if disconnectObserverClass.int == 0 or not class_addMethod(
+        disconnectObserverClass,
+        s"controllerDisconnected:",
+        cast[IMP](controllerDisconnected),
+        "v@:@"
+      ):
+        raise newException(PaddyError, "Unable to create controller disconnect observer")
+      objc_registerClassPair(disconnectObserverClass)
+    disconnectObserver = disconnectObserverClass.new().NSObject
+    NSNotificationCenter.defaultCenter().addObserver(
+      disconnectObserver,
+      s"controllerDisconnected:",
+      GCControllerDidDisconnectNotification,
+      0.ID
+    )
     syncControllers()
 
   initialized = true
+
+proc scanGamepads*() =
+  ## Discovers available controllers without resetting existing input; may block.
+  if not initialized:
+    initGamepads()
+  else:
+    autoreleasepool:
+      syncControllers()
 
 proc closeGamepads*() =
   ## Closes macOS gamepad support.
   if not initialized:
     return
 
+  NSNotificationCenter.defaultCenter().removeObserver(disconnectObserver)
+  disconnectObserver.release()
+  disconnectObserver = 0.NSObject
   for i in 0 ..< MaxGamepads:
     clearSlot(i)
 
   initialized = false
 
 proc pollGamepads*(): seq[Gamepad] =
-  ## Polls macOS gamepads and returns connected snapshots.
+  ## Reads known controllers and removes disconnected ones without discovery.
+  ## The first call initializes and scans if initGamepads was not called.
   if not initialized:
     initGamepads()
 
   autoreleasepool:
-    syncControllers()
+    removeDisconnected()
 
     for i in 0 ..< MaxGamepads:
       let profile = gamepadProfiles[i]
